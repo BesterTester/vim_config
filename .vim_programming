@@ -1,0 +1,54 @@
+" =========================
+" KEY TO FUNCTION MAPPINGS
+" =========================
+"
+" set specific leader
+let g:prog_leader = "-"
+
+" Programming specific mappings
+execute 'nnoremap ' . g:prog_leader . 'b :call CompileC()<CR>'
+execute 'nnoremap ' . g:prog_leader . 'r :call ReRunC()<CR>'
+
+" Quick mappings
+execute 'nnoremap ' . g:prog_leader . 'w <C-W>w'
+execute 'nnoremap ' . g:prog_leader . 'q :q<CR>'
+" Exit terminal mode and close terminal
+execute 'tnoremap ' . g:prog_leader . 'q <C-\><C-n>:q<CR>'
+
+" Terminal mappings
+execute 'nnoremap ' . g:prog_leader . 'vt :rightbelow 80vertical terminal<CR>'
+execute 'nnoremap ' . g:prog_leader . 'vv :rightbelow vertical terminal<CR>'
+execute 'nnoremap ' . g:prog_leader . 'ht :rightbelow 15terminal<CR>'
+
+" ========================
+" FUNCTIONS
+" =========================
+
+" Save the current buffer and run the gcc compiler with the file
+function! CompileC()
+    update
+    let g:filename = expand('%:p:r')
+    let compile_cmd = 'gcc ' . shellescape(expand('%:p')) . ' -o ' . shellescape(g:filename) . " -lm"
+    echo "Compiling: " . compile_cmd
+    let result = system(compile_cmd)
+    if v:shell_error == 0
+        echo "Compilation successful. Running..."
+        execute 'vertical rightbelow terminal ' . g:filename
+    else
+        echo "Compilation failed!"
+        echo result
+    endif
+endfunction
+
+
+" Rerun the last compiled C program
+function! ReRunC()
+    if exists('g:filename') && !empty(g:filename)
+        execute 'quit'
+        execute 'vertical rightbelow terminal ' . g:filename
+    else
+        echo "Could not execute file: " . g:filename
+    endif
+endfunction
+
+

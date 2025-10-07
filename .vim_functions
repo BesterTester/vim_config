@@ -1,0 +1,207 @@
+" =========================
+" KEY TO FUNCTION MAPPINGS
+" =========================
+
+nnoremap <Leader>m :call SendBufferViaEmail()<CR>
+nnoremap <Leader>n :call RenameFileInTab()<CR>
+nnoremap <Leader>e :call ConvertToEpoc()<CR>
+nnoremap <leader>d :call ConvertFromEpoc()<CR>
+
+
+" =========================
+" AUTOCOMMANDS AND FUNCTIONS
+" =========================
+
+" Only apply to .txt files
+augroup HelpInTabs
+    autocmd!
+    autocmd BufEnter *.txt call HelpInNewTab()
+augroup END
+
+" Only apply to help files
+function! HelpInNewTab()
+    if &buftype == 'help'
+        " Convert the help window to a tab
+        execute "normal \<C-W>T"
+    endif
+endfunction
+
+" Do autocompletion if cursor is in word; else add tab
+function! TabOrCompletion()
+    let col = col('.') - 1
+    if col == 0 || getline('.')[col - 1] !~ '\k'
+        return "\<TAB>"
+    else
+        return "\<C-N>"
+    endif
+endfunction
+
+
+function! SendBufferViaEmail()
+  " Send the currently active buffer as email attachment to me
+  " Prompt with email address to use
+  " Use Vim variable or environment variable
+  let l:default_email = get(g:, 'vim_default_email', 'andy.wagner3@vodafone.com')
+  "let l:default_email = g:vim_default_email
+  "  if empty(l:default_email)
+  "  let l:default_email = 'andy.wagner3@vodafone.com'
+  "endif
+
+  let l:email_address = input("Enter email address (default: " . l:default_email . "): ")
+  if empty(l:email_address)
+    let l:email_address = 'andy.wagner3@vodafone.com'
+  endif
+  let g:buffer_file_name = expand("%:p")
+  let cmd = 'echo " " | /usr/bin/mail -s "SQL Buffer File" -a ' . g:buffer_file_name .  " " . l:email_address
+  let output = system(cmd)
+  echo "Sent email. Result: " . output
+endfunction
+
+
+function! RenameFileInTab()
+  " Save the file
+  execute 'write'
+  let old_file_name = expand("%:p")
+  let old_short_name = expand("%:t")
+  let new_file_path = fnamemodify(old_file_name, ":p:h")
+  " Prompt with current file name as default
+  let new_short_name = input("Enter the new file name for: " . old_file_name . " : ", old_short_name)
+  " Cancel if input is empty or user pressed Escape
+  if empty(new_short_name)
+    echo "Rename cancelled."
+    return
+  endif
+  let new_file_name = new_file_path . "/" . new_short_name
+  echo "\nNew file name including path is: " . new_file_name
+
+  let failed = rename(old_file_name, new_file_name)
+  echo "File renamed. Result: " . failed
+  if failed == 0
+    execute 'close'
+    execute 'tabnew ' . new_file_name
+  else
+    echo "Renaming of " . old_file_name . " to " . new_file_name . " failed!"
+  endif
+  " Beispiel vom ScriptingVim02:
+  " - request input, confirmation, or a selection:
+  " 
+  " let name = input("Enter your name: ")
+  "
+  " if confirm('Your name is really ' . name '?', "&Yes\n&No", 1)
+  "   let choices = ['Shall I call you:', 
+  "               \ '  1:  ' . name, 
+  "               \ '  2:  Bruce'
+  "               \ ]
+  " 
+  "   let nicknum = inputlist(choices)
+  " 
+  "   echo "\n\nYou chose:" nicknum
+  " endif
+endfunction
+
+" Decrypt JWT token from register or log line
+function! DecryptOIDCTokenSmart()
+  " Get the contents of the default register
+  let l:reg = getreg('"')
+
+  " Define JWT token pattern
+  let l:jwt_pattern = '\v^[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+$'
+
+  " Check if register contains a valid JWT token
+  if l:reg =~ l:jwt_pattern
+    let l:token = l:reg
+  else
+    " Fallback: extract token from current line using Bearer pattern
+    let l:line = getline('.')
+    let l:token = matchstr(l:line, 'Bearer \zs[a-zA-Z0-9_-]\+\.[a-zA-Z0-9_-]\+\.[a-zA-Z0-9_-]\+')
+  endif
+
+  " If no token was found, notify and exit
+  if empty(l:token)
+    echo "No valid JWT token found in register or current line"
+    return
+  endif
+
+  " Build the command to run the Python script
+  let l:cmd = '/WEB_DATA/tbp-web/Ulm-OPS-Scripts/python_scripts/tool_decrypt_token.py -t ' . shellescape(l:token)
+
+  " Run the command and capture the output
+  let l:output = system(l:cmd)
+
+  " Clean up the output
+  let l:output = substitute(l:output, '\n', '\r', 'g')
+
+  " Insert the output after the current line
+  call append(line('.'), split(l:output, '\r'))
+endfunction
+
+
+" Format selected JSON and insert formatted content below selection
+function! FormatAndInsertJSON()
+  " Save current selection to a temp file
+  let l:tmpfile = tempname()
+  execute "normal! gv\"zy"
+  call writefile(split(@z, "\n"), l:tmpfile)
+
+  " Format using Python's json.tool
+  let l:cmd = 'python -m json.tool ' . shellescape(l:tmpfile)
+  let l:formatted = system(l:cmd)
+  let l:formatted = substitute(l:formatted, '\n$', '', '')
+
+  " Insert formatted JSON below selection
+  execute "'<,'>normal! o"
+  call append(line("'>"), split(l:formatted, "\n"))
+
+  " Clean up temp file
+  call delete(l:tmpfile)
+endfunction
+
+
+" Format selected XML and insert formatted content below selection, handling multiple roots
+function! FormatAndInsertXML()
+  let l:tmpfile = tempname()
+  execute "normal! gv\"zy"
+  " Wrap selection in a dummy root
+  let l:xml_content = "<root>" . @z . "</root>"
+  call writefile(split(l:xml_content, "\n"), l:tmpfile)
+
+  " Format using Python's xml.dom.minidom
+  let l:cmd = 'python -c "import sys; from xml.dom.minidom import parse; print(parse(sys.argv[1]).toprettyxml())" ' . shellescape(l:tmpfile)
+  let l:formatted = system(l:cmd)
+  let l:formatted = substitute(l:formatted, '\n$', '', '')
+
+  " Remove dummy root tags
+  let l:formatted = substitute(l:formatted, '<root>\_s*', '', '')
+  let l:formatted = substitute(l:formatted, '</root>\_s*', '', '')
+
+  " Insert formatted XML below selection
+  execute "'<,'>normal! o"
+  call append(line("'>"), split(l:formatted, "\n"))
+
+  call delete(l:tmpfile)
+endfunction
+
+
+" Convert date in register into epoch by linux command
+function! ConvertToEpoc()
+  let l:timestamp = @"
+  let l:cmd = 'date -d "' . l:timestamp . '" +%s%3N'
+  let l:epoch = system(l:cmd)
+  let l:epoch = substitute(l:epoch, '\n', '', '')
+  let @" = l:epoch
+  normal! ""p
+endfunction
+
+" Convert epoch under cursor into date
+function! ConvertFromEpoc()
+  let l:epoch = expand('<cword>')
+  if l:epoch =~ '^\d\+$'
+    let l:cmd = 'ts=' . l:epoch . '; printf "%s.%03d\n" "$(date -d "@$((ts/1000))" "+%Y-%m-%d %H:%M:%S")" "$((ts%1000))"'
+    let l:date = system(l:cmd)
+    let l:date = substitute(l:date, '\n', '', 'g')
+    execute 'normal! ciw' . l:date
+  else
+    echo "No valid epoch under cursor"
+  endif
+endfunction
+
