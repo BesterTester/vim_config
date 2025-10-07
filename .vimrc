@@ -1,6 +1,40 @@
 " =========================
-" GENERAL SETTINGS
+" KEY TO FUNCTION MAPPINGS
+" these mappings are located in there respective configuration file
+" where the function itself is located
+" NOTE: some short cuts might even overlap
+"
 " =========================
+
+let mapleader = ','             " Remap the Leader to comma
+let g:prog_leader = '-'         " Set an additional leader
+
+" =========================
+" KEYBOARD MAPPING
+" =========================
+
+" Keyboard and search
+nnoremap    /               /\v
+cnoremap    %s/             %s/\v
+noremap     ä               <C-]>             " Settings for german keyboard; follow links
+
+inoremap    <expr> <TAB>    TabOrCompletion()
+nnoremap    <TAB>           gt
+nnoremap    <S-TAB>         gT
+
+
+nnoremap    ;r              :source ~/awagner1/.vimrc                   " Quick saving and loading of config files
+nnoremap    vv              <c-v>                                       " Remap visual block mode to not interfere with windows paste
+tnoremap    -e              <C-\><C-n>                                  " Exit terminal mode keep tab open
+tnoremap    -q              <C-\><C-n>:q!<CR>                           " Exit terminal mode and close terminal
+nnoremap    -vv             :rightbelow vertical terminal<CR>|          " Open vertical terminal
+nnoremap    -w              <C-W>                                       " Circle throug windows
+nnoremap    -q              :q<CR>                                      " Close window
+
+" Add empty line below stay in normal mode; except in command line window
+nnoremap <expr> <Enter> &buftype ==# 'nofile' && &filetype ==# 'vim' ? '<Enter>' : 'o<ESC>'
+
+
 
 " set the cursor shape
 let &t_ti.="\e[1 q"
@@ -30,14 +64,11 @@ filetype plugin on              " Enable plugins and load plugin for the detecte
 filetype indent on              " Load an indent file for the detected file type.
 filetype plugin indent on
 
-" Keyboard and search
-nnoremap / /\v
-cnoremap %s/ %s/\v
-
 " Syntax and colors
 syntax on                       " Set syntax on and color scheme
 " colorscheme slate             " Farben ausgeschalten zum Test
 autocmd BufRead,BufNewFile .vim* set filetype=vim
+
 
 " =========================
 " INDENTATION AND TABS
@@ -46,32 +77,6 @@ autocmd BufRead,BufNewFile .vim* set filetype=vim
 set expandtab                   " Use spaces instead of tabs
 set tabstop=4                   " Number of spaces a tab counts for
 set shiftwidth=4                " Number of spaces to use for each step of (auto)indent
-
-" =========================
-" NAVIGATION AND MAPPING
-" =========================
-
-noremap     ä <C-]>             " Settings for german keyboard; follow links
-tnoremap    <Leader><ESC>   <C-\><C-n>
-
-inoremap    <expr> <TAB>    TabOrCompletion()
-nmap        <TAB>           gt
-nmap        <S-TAB>         gT
-"vnoremap    <C-c>           "*y
-
-" Quick saving and loading of config files
-nnoremap    ;r              :source ~/awagner1/.vimrc
-" Add empty line below stay in normal mode; except in command line window
-nnoremap <expr> <Enter> &buftype ==# 'nofile' && &filetype ==# 'vim' ? '<Enter>' : 'o<ESC>'
-" Remap visual block mode to not interfere with windows paste
-nnoremap    vv              <c-v>
-
-" Exit terminal mode keep tab open
-tnoremap ;e <C-\><C-n>
-" Exit terminal mode and close terminal
-tnoremap ;q <C-\><C-n>:q!<CR>
-" Open terminal
-nnoremap ;vv :rightbelow vertical terminal<CR>
 
 
 " =========================
@@ -205,14 +210,4 @@ ice()
 EOF
 endfunction
 
-
-" =========================
-" KEY TO FUNCTION MAPPINGS
-" these mappings are located in therespective configuration file
-" where the function itself is locatet
-" NOTE: some short cuts might even overlap
-"
-" =========================
-
-let mapleader = ","
 

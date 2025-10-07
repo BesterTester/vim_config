@@ -1,25 +1,11 @@
 " =========================
 " KEY TO FUNCTION MAPPINGS
 " =========================
-"
-" set specific leader
-let g:prog_leader = "-"
 
 " Programming specific mappings
 execute 'nnoremap ' . g:prog_leader . 'b :call CompileC()<CR>'
 execute 'nnoremap ' . g:prog_leader . 'r :call ReRunC()<CR>'
 
-" Quick mappings
-execute 'nnoremap ' . g:prog_leader . 'w <C-W>w'
-execute 'nnoremap ' . g:prog_leader . 'q :q<CR>'
-
-" Exit terminal mode keep tab open
-" execute 'tnoremap ' . g:prog_leader . 'e <C-\><C-n>'
-" Exit terminal mode and close terminal
-" execute 'tnoremap ' . g:prog_leader . 'q <C-\><C-n>:q!<CR>'
-
-" Terminal mappings
-" execute 'nnoremap ' . g:prog_leader . 'vv :rightbelow vertical terminal<CR>'
 
 " ========================
 " FUNCTIONS
