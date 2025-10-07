@@ -12,13 +12,14 @@ execute 'nnoremap ' . g:prog_leader . 'r :call ReRunC()<CR>'
 " Quick mappings
 execute 'nnoremap ' . g:prog_leader . 'w <C-W>w'
 execute 'nnoremap ' . g:prog_leader . 'q :q<CR>'
+
+" Exit terminal mode keep tab open
+" execute 'tnoremap ' . g:prog_leader . 'e <C-\><C-n>'
 " Exit terminal mode and close terminal
-execute 'tnoremap ' . g:prog_leader . 'q <C-\><C-n>:q<CR>'
+" execute 'tnoremap ' . g:prog_leader . 'q <C-\><C-n>:q!<CR>'
 
 " Terminal mappings
-execute 'nnoremap ' . g:prog_leader . 'vt :rightbelow 80vertical terminal<CR>'
-execute 'nnoremap ' . g:prog_leader . 'vv :rightbelow vertical terminal<CR>'
-execute 'nnoremap ' . g:prog_leader . 'ht :rightbelow 15terminal<CR>'
+" execute 'nnoremap ' . g:prog_leader . 'vv :rightbelow vertical terminal<CR>'
 
 " ========================
 " FUNCTIONS

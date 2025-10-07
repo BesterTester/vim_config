@@ -66,6 +66,13 @@ nnoremap <expr> <Enter> &buftype ==# 'nofile' && &filetype ==# 'vim' ? '<Enter>'
 " Remap visual block mode to not interfere with windows paste
 nnoremap    vv              <c-v>
 
+" Exit terminal mode keep tab open
+tnoremap ;e <C-\><C-n>
+" Exit terminal mode and close terminal
+tnoremap ;q <C-\><C-n>:q!<CR>
+" Open terminal
+nnoremap ;vv :rightbelow vertical terminal<CR>
+
 
 " =========================
 " DISPLAY SETTINGS
