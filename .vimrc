@@ -3,11 +3,11 @@
 " these mappings are located in there respective configuration file
 " where the function itself is located
 " NOTE: some short cuts might even overlap
-"
 " =========================
 
 let mapleader = ','             " Remap the Leader to comma
 let g:prog_leader = '-'         " Set an additional leader
+
 
 " =========================
 " KEYBOARD MAPPING
@@ -16,7 +16,7 @@ let g:prog_leader = '-'         " Set an additional leader
 " Keyboard and search
 nnoremap    /               /\v
 cnoremap    %s/             %s/\v
-noremap     ä               <C-]>             " Settings for german keyboard; follow links
+noremap     ä               <C-]>                                       " Settings for german keyboard; follow links
 
 inoremap    <expr> <TAB>    TabOrCompletion()
 nnoremap    <TAB>           gt
