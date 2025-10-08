@@ -66,7 +66,7 @@ filetype plugin indent on
 
 " Syntax and colors
 syntax on                       " Set syntax on and color scheme
-" colorscheme slate             " Farben ausgeschalten zum Test
+execute 'colorscheme ' . g:color_scheme            | " Farben ausgeschalten zum Test
 autocmd BufRead,BufNewFile .vim* set filetype=vim
 
 
