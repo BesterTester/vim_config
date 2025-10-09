@@ -23,7 +23,7 @@ nnoremap    <TAB>           gt
 nnoremap    <S-TAB>         gT
 
 
-nnoremap    ;r              :source ~/awagner1/.vimrc                   " Quick saving and loading of config files
+execute     'nnoremap       ;r       :source ' . g:vim_rc_file         |" Quick saving and loading of config files
 nnoremap    vv              <c-v>                                       " Remap visual block mode to not interfere with windows paste
 tnoremap    -e              <C-\><C-n>                                  " Exit terminal mode keep tab open
 tnoremap    -q              <C-\><C-n>:q!<CR>                           " Exit terminal mode and close terminal
@@ -59,13 +59,13 @@ let g:netrw_browsex_viewer = 'terminal'
 
 
 " Filetype and plugins
-filetype on                     " Enable type file detection.
-filetype plugin on              " Enable plugins and load plugin for the detected file type.
-filetype indent on              " Load an indent file for the detected file type.
+filetype on                                         " Enable type file detection.
+filetype plugin on                                  " Enable plugins and load plugin for the detected file type.
+filetype indent on                                  " Load an indent file for the detected file type.
 filetype plugin indent on
 
 " Syntax and colors
-syntax on                       " Set syntax on and color scheme
+syntax on                                           " Set syntax on and color scheme
 execute 'colorscheme ' . g:color_scheme            | " Farben ausgeschalten zum Test
 autocmd BufRead,BufNewFile .vim* set filetype=vim
 
@@ -74,9 +74,9 @@ autocmd BufRead,BufNewFile .vim* set filetype=vim
 " INDENTATION AND TABS
 " =========================
 
-set expandtab                   " Use spaces instead of tabs
-set tabstop=4                   " Number of spaces a tab counts for
-set shiftwidth=4                " Number of spaces to use for each step of (auto)indent
+set expandtab                                       " Use spaces instead of tabs
+set tabstop=4                                       " Number of spaces a tab counts for
+set shiftwidth=4                                    " Number of spaces to use for each step of (auto)indent
 
 
 " =========================

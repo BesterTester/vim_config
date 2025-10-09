@@ -12,3 +12,19 @@ My personal Vim configuration files for managing settings across multiple system
 ## Usage
 
 Source the appropriate configuration files from your system-specific `.vimrc`.
+
+
+## Example .vimrc file
+" =========================
+" WINDOWS SPECIFIC SETTINGS
+" =========================
+
+set colorscheme
+let g:color_scheme = 'slate'
+
+let g:vim_rc_file = '~/awagner1/_vimrc'
+
+source C:/Users/Andy.Wagner3/repositories/vim_config/.vimrc
+source C:/Users/Andy.Wagner3/repositories/vim_config/.vim_functions
+source C:/Users/Andy.Wagner3/repositories/vim_config/.vim_programming
+

@@ -12,6 +12,14 @@ nnoremap <leader>d :call ConvertFromEpoc()<CR>
 " AUTOCOMMANDS AND FUNCTIONS
 " =========================
 
+" Insert a paragraph seperator and the current date time stamp
+function! InsertDate()
+    let l:time_stamp = strftime('%c')
+    let l:seperator = "====================================================================================================\n" 
+    execute 'normal! O' . l:seperator . l:time_stamp . "\n"
+endfunction
+
+
 " Only apply to .txt files
 augroup HelpInTabs
     autocmd!
