@@ -24,6 +24,8 @@ nnoremap    <S-TAB>         gT
 
 
 execute     'nnoremap       ;r       :source ' . g:vim_rc_file         |" Quick saving and loading of config files
+nnoremap    ;i              :call InsertDate()<CR>                      " Input a Datemarker
+
 nnoremap    vv              <c-v>                                       " Remap visual block mode to not interfere with windows paste
 tnoremap    -e              <C-\><C-n>                                  " Exit terminal mode keep tab open
 tnoremap    -q              <C-\><C-n>:q!<CR>                           " Exit terminal mode and close terminal
