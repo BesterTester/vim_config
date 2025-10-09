@@ -7,7 +7,7 @@ execute 'nnoremap ' . g:prog_leader . 'b :call CompileC()<CR>'
 execute 'nnoremap ' . g:prog_leader . 'r :call ReRunC()<CR>'
 
 
-" ========================
+" =========================
 " FUNCTIONS
 " =========================
 

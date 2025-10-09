@@ -30,12 +30,16 @@ nnoremap    vv              <c-v>                                       " Remap 
 tnoremap    -e              <C-\><C-n>                                  " Exit terminal mode keep tab open
 tnoremap    -q              <C-\><C-n>:q!<CR>                           " Exit terminal mode and close terminal
 nnoremap    -vv             :rightbelow vertical terminal<CR>|          " Open vertical terminal
-nnoremap    -w              <C-W>                                       " Circle throug windows
+nnoremap    -w              <C-W><C-W>                                  " Circle throug windows
 nnoremap    -q              :q<CR>                                      " Close window
 
 " Add empty line below stay in normal mode; except in command line window
 nnoremap <expr> <Enter> &buftype ==# 'nofile' && &filetype ==# 'vim' ? '<Enter>' : 'o<ESC>'
 
+" Autcompletion short cuts
+inoremap    {               {<CR>}<Esc>ko
+inoremap    (               ()<Left>
+inoremap    [               []<Left>
 
 
 " set the cursor shape
