@@ -94,7 +94,7 @@ set incsearch
 set showcmd
 set matchpairs+=<:>
 set number
-set clipboard=unnamedplus
+" set clipboard=unnamedplus
 
 set cursorline
 highlight CursorLine term=standout cterm=bold ctermbg=1
