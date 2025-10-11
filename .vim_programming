@@ -3,13 +3,15 @@
 " =========================
 
 " Programming specific mappings
-execute 'nnoremap ' . g:prog_leader . 'b :call CompileC()<CR>'
-execute 'nnoremap ' . g:prog_leader . 'r :call ReRunC()<CR>'
+execute 'nnoremap ' . g:prog_leader . 'b :call CompileAndRunVSplit()<CR>'
+execute 'nnoremap ' . g:prog_leader . 'r :call RerunInVSplit()<CR>'
 
 
 " =========================
 " FUNCTIONS
 " =========================
+
+let g:out_esc       = ''
 
 " Save the current buffer and run the gcc compiler with the file
 function! CompileC()
@@ -36,6 +38,29 @@ function! ReRunC()
     else
         echo "Could not execute file: " . g:filename
     endif
+endfunction
+
+
+function! CompileAndRunVSplit()
+    update
+    let l:src           = expand('%:p')
+    let l:src_esc       = shellescape(l:src)
+    let l:out           = expand('%:p:r')
+    let g:out_esc       = shellescape(l:out)
+    let l:compile_cmd   = 'bash -lc "gcc  ' . l:src_esc . ' -o ' . g:out_esc . ' -lm && ' . g:out_esc . '"'
+    execute 'vertical rightbelow terminal ' . l:compile_cmd
+endfunction
+
+
+function! RerunInVSplit()
+    "   update
+    "   let l:src           = expand('%:p')
+    "   let l:src_esc       = shellescape(l:src)
+    "   let l:out           = expand('%:p:r')
+    "   let g:out_esc       = shellescape(l:out)
+    let l:rerun_cmd   = 'bash -lc "' . g:out_esc . '"'
+    execute 'quit'
+    execute 'vertical rightbelow terminal ' . l:rerun_cmd
 endfunction
 
 

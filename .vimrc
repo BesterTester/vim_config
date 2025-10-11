@@ -22,6 +22,11 @@ inoremap    <expr> <TAB>    TabOrCompletion()                           " Autoco
 nnoremap    <TAB>           gt                                          " Circle through tabs; TODO: can this bestricted to netrw?
 nnoremap    <S-TAB>         gT
 
+" Autcompletion short cuts
+inoremap    {               {<CR>}<Esc>ko
+inoremap    (               ()<Left>
+inoremap    [               []<Left>
+
 
 execute     'nnoremap       ;r       :source ' . g:vim_rc_file         |" Quick saving and loading of config files
 nnoremap    ;i              :call InsertDate()<CR>                      " Input a Datemarker
@@ -39,11 +44,11 @@ execute     'nnoremap ' . g:prog_leader . 'n :call ToggleLineNumbers()<CR>'
 " Add empty line below stay in normal mode; except in command line window
 nnoremap <expr> <Enter> &buftype ==# 'nofile' && &filetype ==# 'vim' ? '<Enter>' : 'o<ESC>'
 
-" Autcompletion short cuts
-inoremap    {               {<CR>}<Esc>ko
-inoremap    (               ()<Left>
-inoremap    [               []<Left>
-
+" Macro definitions | Repeating of last macro '@@' is mapped to ','
+nnoremap <silent> , @@
+let @j='ddp'                                                            " Shift current line down     
+let @k='ddkkp'                                                          " Shift current line up
+let @d='Yp'                                                             " Duplicate current line down
 
 " set the cursor shape
 let &t_ti.="\e[1 q"
