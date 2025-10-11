@@ -12,6 +12,30 @@ nnoremap <leader>d :call ConvertFromEpoc()<CR>
 " AUTOCOMMANDS AND FUNCTIONS
 " =========================
 
+function! ToggleLineNumbers()
+" Toggling the line nubmers
+    if &number
+        setlocal nonumber
+        echo "Line numbers: OFF"
+    else
+        setlocal number
+        echo "Line numbers: ON"
+    endif
+endfunction
+
+
+function! ToggleWrap()
+" Toggling the line wrapping
+    if &wrap
+        setlocal nowrap
+        echo "Line wrapping: OFF"
+    else
+        setlocal wrap
+        echo "Line wrapping: ON"
+    endif
+endfunction
+
+
 " Insert a paragraph seperator and the current date time stamp
 function! InsertDate()
     let l:time_stamp = strftime('%c')
@@ -107,6 +131,7 @@ function! RenameFileInTab()
   " endif
 endfunction
 
+
 " Decrypt JWT token from register or log line
 function! DecryptOIDCTokenSmart()
   " Get the contents of the default register
@@ -199,6 +224,7 @@ function! ConvertToEpoc()
   let @" = l:epoch
   normal! ""p
 endfunction
+
 
 " Convert epoch under cursor into date
 function! ConvertFromEpoc()

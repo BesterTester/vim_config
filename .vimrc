@@ -18,8 +18,8 @@ nnoremap    /               /\v
 cnoremap    %s/             %s/\v
 noremap     ä               <C-]>                                       " Settings for german keyboard; follow links
 
-inoremap    <expr> <TAB>    TabOrCompletion()
-nnoremap    <TAB>           gt
+inoremap    <expr> <TAB>    TabOrCompletion()                           " Autocomplete or insert spaces depending on character before cursor
+nnoremap    <TAB>           gt                                          " Circle through tabs; TODO: can this bestricted to netrw?
 nnoremap    <S-TAB>         gT
 
 
@@ -27,11 +27,14 @@ execute     'nnoremap       ;r       :source ' . g:vim_rc_file         |" Quick 
 nnoremap    ;i              :call InsertDate()<CR>                      " Input a Datemarker
 
 nnoremap    vv              <c-v>                                       " Remap visual block mode to not interfere with windows paste
+
 tnoremap    -e              <C-\><C-n>                                  " Exit terminal mode keep tab open
 tnoremap    -q              <C-\><C-n>:q!<CR>                           " Exit terminal mode and close terminal
 nnoremap    -vv             :rightbelow vertical terminal<CR>|          " Open vertical terminal
 nnoremap    -w              <C-W><C-W>                                  " Circle throug windows
 nnoremap    -q              :q<CR>                                      " Close window
+execute     'nnoremap ' . g:prog_leader . 'z :call ToggleWrap()<CR>'
+execute     'nnoremap ' . g:prog_leader . 'n :call ToggleLineNumbers()<CR>'
 
 " Add empty line below stay in normal mode; except in command line window
 nnoremap <expr> <Enter> &buftype ==# 'nofile' && &filetype ==# 'vim' ? '<Enter>' : 'o<ESC>'
@@ -72,29 +75,25 @@ filetype plugin indent on
 
 " Syntax and colors
 syntax on                                           " Set syntax on and color scheme
-execute 'colorscheme ' . g:color_scheme            | " Farben ausgeschalten zum Test
+execute 'colorscheme ' . g:color_scheme            |" Set color scheme based on ~/.vimrc setting
 autocmd BufRead,BufNewFile .vim* set filetype=vim
 
 
 " =========================
-" INDENTATION AND TABS
+" INDENTATION AND TABS | DISPLAY SETTINGS
 " =========================
 
 set expandtab                                       " Use spaces instead of tabs
 set tabstop=4                                       " Number of spaces a tab counts for
 set shiftwidth=4                                    " Number of spaces to use for each step of (auto)indent
+set showbreak=↪\                                    " Show a line break indicator
 
-
-" =========================
-" DISPLAY SETTINGS
-" =========================
-
-set hlsearch
-set incsearch
-set showcmd
-set matchpairs+=<:>
-set number
-" set clipboard=unnamedplus
+set hlsearch                                        " Highlight search results
+set incsearch                                       " Incremental search while typing
+set showcmd                                         " Show partial commands in status line
+set matchpairs+=<:>                                 " Add < > to matching pairs
+set number                                          " Show line numbers
+" set clipboard=unnamedplus                         " Use system clipboard (commented out)
 
 set cursorline
 highlight CursorLine term=standout cterm=bold ctermbg=1
@@ -107,13 +106,13 @@ autocmd BufNewFile,BufRead .vim* set filetype=vim
 " FILE MANAGEMENT
 " =========================
 
-set viminfo='50,n~/awagner1/.viminfo    " Set my personal .viminfo file
-set undofile
-set undodir=~/awagner1/.vim/undodir
+set viminfo='50,n~/awagner1/.viminfo                " Set my personal .viminfo file
+set undofile                                        " Enable persistent undo
+set undodir=~/awagner1/.vim/undodir                 " Set undo directory location
 
 " FINDING FILES
-set path+=**
-set wildmenu
+set path+=**                                        " Search recursively in subdirectories
+set wildmenu                                        " Enhanced command-line completion
 
 " =========================
 " TABLINE
