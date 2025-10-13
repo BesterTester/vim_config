@@ -31,11 +31,11 @@ inoremap    [               []<Left>
 execute     'nnoremap       ;r       :source ' . g:vim_rc_file         |" Quick saving and loading of config files
 nnoremap    ;i              :call InsertDate()<CR>                      " Input a Datemarker
 
-nnoremap    vv              <c-v>                                       " Remap visual block mode to not interfere with windows paste
+nnoremap    vv              <C-v>                                       " Remap visual block mode to not interfere with windows paste
 
 tnoremap    -e              <C-\><C-n>                                  " Exit terminal mode keep tab open
 tnoremap    -q              <C-\><C-n>:q!<CR>                           " Exit terminal mode and close terminal
-nnoremap    -vv             :rightbelow vertical terminal<CR>|          " Open vertical terminal
+nnoremap    -vv             :rightbelow vertical terminal<CR>          |" Open vertical terminal
 nnoremap    -w              <C-W><C-W>                                  " Circle throug windows
 nnoremap    -q              :q<CR>                                      " Close window
 execute     'nnoremap ' . g:prog_leader . 'z :call ToggleWrap()<CR>'
@@ -98,7 +98,7 @@ set incsearch                                       " Incremental search while t
 set showcmd                                         " Show partial commands in status line
 set matchpairs+=<:>                                 " Add < > to matching pairs
 set number                                          " Show line numbers
-" set clipboard=unnamedplus                         " Use system clipboard (commented out)
+set clipboard=unnamed                               " Use system clipboard 
 
 set cursorline
 highlight CursorLine term=standout cterm=bold ctermbg=1
