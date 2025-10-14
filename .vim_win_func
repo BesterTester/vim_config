@@ -1,11 +1,9 @@
 " =========================
-" FUNCTIONS
+" AUTOCOMMANDS AND FUNCTIONS
 " =========================
 
-" Function to save the session
-function! SaveSession()
-    execute 'mks! ~/_vim_latest_session'
-endfunction
+" Autocommand to call the SaveSession function on Vim exit
+autocmd VimLeave * call ExitVim()
 
 
 " Function to save all unsaved files for recovery in the next session
@@ -79,18 +77,3 @@ function! ActivateNetrwTab()
   echom 'No netrw tab found.'
 endfunction
 
-
-" Autocommand to call the SaveSession function on Vim exit
-" autocmd VimLeave * call SaveSession()
-autocmd VimLeave * call ExitVim()
-
-function! ToggleLineNumbers()
-" Toggling the line nubmers
-    if &number
-        setlocal nonumber
-        echo "Line numbers: OFF"
-    else
-        setlocal number
-        echo "Line numbers: ON"
-    endif
-endfunction
