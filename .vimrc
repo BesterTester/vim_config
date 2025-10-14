@@ -36,7 +36,6 @@ nnoremap    vv              <C-v>                                       " Remap 
 tnoremap    -e              <C-\><C-n>                                  " Exit terminal mode keep tab open
 tnoremap    -q              <C-\><C-n>:q!<CR>                           " Exit terminal mode and close terminal
 nnoremap    -vv             :rightbelow vertical terminal<CR>          |" Open vertical terminal
-nnoremap    -w              <C-W><C-W>                                  " Circle throug windows
 nnoremap    -q              :q<CR>                                      " Close window
 execute     'nnoremap ' . g:prog_leader . 'z :call ToggleWrap()<CR>'
 execute     'nnoremap ' . g:prog_leader . 'n :call ToggleLineNumbers()<CR>'
@@ -48,7 +47,6 @@ nnoremap <expr> <Enter> &buftype ==# 'nofile' && &filetype ==# 'vim' ? '<Enter>'
 nnoremap <silent> , @@
 let @j='ddp'                                                            " Shift current line down     
 let @k='ddkkp'                                                          " Shift current line up
-let @d='Yp'                                                             " Duplicate current line down
 
 " set the cursor shape
 let &t_ti.="\e[1 q"
@@ -95,6 +93,7 @@ set showbreak=↪\                                    " Show a line break indica
 
 set hlsearch                                        " Highlight search results
 set incsearch                                       " Incremental search while typing
+set showcmd                                         " Show partial commands in status line
 set showcmd                                         " Show partial commands in status line
 set matchpairs+=<:>                                 " Add < > to matching pairs
 set number                                          " Show line numbers
