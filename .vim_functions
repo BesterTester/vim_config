@@ -12,6 +12,18 @@ nnoremap <leader>d :call ConvertFromEpoc()<CR>
 " AUTOCOMMANDS AND FUNCTIONS
 " =========================
 
+function! TogglePaste()
+" Toggling the line nubmers
+    if &paste 
+        setlocal nopaste
+        echo "Paste: OFF"
+    else
+        setlocal paste
+        echo "Paste: ON"
+    endif
+endfunction
+
+
 function! ToggleLineNumbers()
 " Toggling the line nubmers
     if &number

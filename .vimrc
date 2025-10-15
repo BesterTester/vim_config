@@ -29,6 +29,7 @@ nnoremap    <S-TAB>         gT
 inoremap    {               {<CR>}<Esc>ko
 inoremap    (               ()<Left>
 inoremap    [               []<Left>
+" inoremap <expr> { v:char == '{' ? '{<CR>}<Esc>ko' : '{'
 
 
 execute     'nnoremap       ;r       :source ' . g:vim_rc_file         |" Quick saving and loading of config files
@@ -42,6 +43,7 @@ nnoremap    -vv             :rightbelow vertical terminal<CR>|          " Open v
 nnoremap    -q              :q<CR>                                      " Close window
 execute     'nnoremap ' . g:prog_leader . 'z :call ToggleWrap()<CR>'
 execute     'nnoremap ' . g:prog_leader . 'n :call ToggleLineNumbers()<CR>'
+execute     'nnoremap ' . g:prog_leader . 'p :call TogglePaste()<CR>'
 
 " Add empty line below stay in normal mode; except in command line window
 nnoremap <expr> <Enter> &buftype ==# 'nofile' && &filetype ==# 'vim' ? '<Enter>' : 'o<ESC>'
