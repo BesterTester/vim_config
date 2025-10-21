@@ -44,6 +44,7 @@ nnoremap    -q              :q<CR>                                      " Close 
 execute     'nnoremap ' . g:prog_leader . 'z :call ToggleWrap()<CR>'
 execute     'nnoremap ' . g:prog_leader . 'n :call ToggleLineNumbers()<CR>'
 execute     'nnoremap ' . g:prog_leader . 'p :call TogglePaste()<CR>'
+execute     'nnoremap ' . g:prog_leader . 'c :call ToggleComment()<CR>'
 
 " Add empty line below stay in normal mode; except in command line window
 " nnoremap <expr> <Enter> &buftype ==# 'nofile' && &filetype ==# 'vim' ? '<Enter>' : 'o<ESC>'
@@ -106,7 +107,7 @@ set showcmd                                         " Show partial commands in s
 set showcmd                                         " Show partial commands in status line
 set matchpairs+=<:>                                 " Add < > to matching pairs
 set number                                          " Show line numbers
-set clipboard=unnamed                               " Use system clipboard 
+set clipboard=unnamedplus                           " Use system clipboard
 
 set cursorline
 highlight CursorLine term=standout cterm=bold ctermbg=1

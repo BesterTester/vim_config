@@ -5,6 +5,7 @@
 " Programming specific mappings
 execute 'nnoremap ' . g:prog_leader . 'b :call CompileAndRunVSplit()<CR>'
 execute 'nnoremap ' . g:prog_leader . 'r :call RerunInVSplit()<CR>'
+execute 'nnoremap ' . g:prog_leader . 'c :call ToggleComment()<CR>'
 
 
 " =========================
@@ -61,6 +62,26 @@ function! RerunInVSplit()
     let l:rerun_cmd   = 'bash -lc "' . g:out_esc . '"'
     execute 'quit'
     execute 'vertical rightbelow terminal ' . l:rerun_cmd
+endfunction
+
+
+" Toggle C/C++ comment on current line
+function! ToggleComment()
+    let l:line = getline('.')
+    let l:stripped = substitute(l:line, '^\s*', '', '')
+    
+    if l:stripped =~# '^//'
+        " Line is commented - remove comment
+        let l:new_line = substitute(l:line, '^\(\s*\)//\s*', '\1', '')
+        call setline('.', l:new_line)
+        echo "Comment removed"
+    else
+        " Line is not commented - add comment
+        let l:indent = matchstr(l:line, '^\s*')
+        let l:new_line = l:indent . '// ' . l:stripped
+        call setline('.', l:new_line)
+        echo "Comment added"
+    endif
 endfunction
 
 
