@@ -236,6 +236,7 @@ function! ExecuteBashCommandBuffer(bash_file)
     " Append SQL from sql_buffer to the spool_filename
     let cmd = 'cat ' . shellescape(g:sql_buffer) . ' >> ' . shellescape(new_spool_filename)
     let output = system(cmd)
+    execute 'quit'
     execute 'tabnew ' . new_spool_filename
     setlocal nowrap
     setlocal nonumber
