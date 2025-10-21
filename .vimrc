@@ -46,7 +46,9 @@ execute     'nnoremap ' . g:prog_leader . 'n :call ToggleLineNumbers()<CR>'
 execute     'nnoremap ' . g:prog_leader . 'p :call TogglePaste()<CR>'
 
 " Add empty line below stay in normal mode; except in command line window
-nnoremap <expr> <Enter> &buftype ==# 'nofile' && &filetype ==# 'vim' ? '<Enter>' : 'o<ESC>'
+" nnoremap <expr> <Enter> &buftype ==# 'nofile' && &filetype ==# 'vim' ? '<Enter>' : 'o<ESC>'
+" nnoremap <expr> <Enter> bufname('%') ==# '[Command Line]' ? '<Enter>' : 'o<ESC>'
+nnoremap <expr> <Enter> (&buftype ==# '') ? 'o<ESC>' : '<Enter>'
 
 " Macro definitions | Repeating of last macro '@@' is mapped to ','
 nnoremap <silent> , @@
@@ -76,6 +78,8 @@ let g:netrw_browsex_viewer = 'terminal'
 
 
 " Filetype and plugins
+"
+"
 filetype on                                         " Enable type file detection.
 filetype plugin on                                  " Enable plugins and load plugin for the detected file type.
 filetype indent on                                  " Load an indent file for the detected file type.
