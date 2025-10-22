@@ -36,6 +36,9 @@ execute     'nnoremap       ;r       :source ' . g:vim_rc_file         |" Quick 
 nnoremap    ;i              :call InsertDate()<CR>                      " Input a Datemarker
 nnoremap    ;e              :call ExitVim()<CR>                         " Save all buffers befor exiting vim
 
+nnoremap    *               *``                                         " Do not jump after highlight search
+nnoremap    #               #``                                         " Do not jump after highlight search
+
 
 tnoremap    -e              <C-\><C-n>                                  " Exit terminal mode keep tab open
 tnoremap    -q              <C-\><C-n>:q!<CR>                           " Exit terminal mode and close terminal
@@ -50,11 +53,6 @@ execute     'nnoremap ' . g:prog_leader . 'c :call ToggleComment()<CR>'
 " nnoremap <expr> <Enter> &buftype ==# 'nofile' && &filetype ==# 'vim' ? '<Enter>' : 'o<ESC>'
 " nnoremap <expr> <Enter> bufname('%') ==# '[Command Line]' ? '<Enter>' : 'o<ESC>'
 nnoremap <expr> <Enter> (&buftype ==# '') ? 'o<ESC>' : '<Enter>'
-
-" Macro definitions | Repeating of last macro '@@' is mapped to ','
-nnoremap <silent> , @@
-let @j='ddp'                                                            " Shift current line down     
-let @k='ddkkp'                                                          " Shift current line up
 
 " set the cursor shape
 let &t_ti.="\e[1 q"
