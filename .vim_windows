@@ -1,0 +1,10 @@
+" =========================
+" WINDOW SPECIFIC CONFIGURATION
+" =========================
+
+" Force yank to clipboard
+set clipboard=unnamedplus
+nnoremap    y               "+y
+nnoremap    yy              "+yy
+nnoremap    Y               "+Y
+vnoremap    y               "+y
