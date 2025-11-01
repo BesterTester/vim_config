@@ -24,12 +24,10 @@ inoremap    <expr> <TAB>    TabOrCompletion()                           " Autoco
 nnoremap    <TAB>           gt                                          " Circle through tabs; TODO: can this bestricted to netrw?
 nnoremap    <S-TAB>         gT
 
-
 " Autcompletion short cuts
-inoremap    {               {<CR>}<Esc>ko
-inoremap    (               ()<Left>
-inoremap    [               []<Left>
-" inoremap <expr> { v:char == '{' ? '{<CR>}<Esc>ko' : '{'
+inoremap    {               {<CR>}<Esc>ko                               " Create a paragraph
+
+inoremap    jj              <Esc>                                       " Escape by jj
 
 
 execute     'nnoremap       ;r       :source ' . g:vim_rc_file         |" Quick saving and loading of config files
