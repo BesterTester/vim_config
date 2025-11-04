@@ -17,8 +17,8 @@ let g:prog_leader = '-'         " Set an additional leader
 nnoremap    /               /\v
 cnoremap    %s/             %s/\v
 noremap     ä               <C-]>                                       " Settings for german keyboard; follow links
-nnoremap    vv              <C-v>                                       " Remap visual block mode to not interfere with windows paste
-
+" Remap visual block mode to not interfere with windows paste
+nnoremap    vv              <C-v>
 
 inoremap    <expr> <TAB>    TabOrCompletion()                           " Autocomplete or insert spaces depending on character before cursor
 nnoremap    <TAB>           gt                                          " Circle through tabs; TODO: can this bestricted to netrw?
@@ -26,21 +26,22 @@ nnoremap    <S-TAB>         gT
 
 " Autcompletion short cuts
 inoremap    {               {<CR>}<Esc>ko                               " Create a paragraph
-
-inoremap    jj              <Esc>                                       " Escape by jj
+" Escape by jj
+inoremap    jj              <Esc>
 
 
 execute     'nnoremap       ;r       :source ' . g:vim_rc_file         |" Quick saving and loading of config files
 nnoremap    ;i              :call InsertDate()<CR>                      " Input a Datemarker
 nnoremap    ;e              :call ExitVim()<CR>                         " Save all buffers befor exiting vim
-
-nnoremap    *               *``                                         " Do not jump after highlight search
-nnoremap    #               #``                                         " Do not jump after highlight search
+" Do not jump after highlight search
+nnoremap    *               *``
+nnoremap    #               #``
 
 
 tnoremap    -e              <C-\><C-n>                                  " Exit terminal mode keep tab open
 tnoremap    -q              <C-\><C-n>:q!<CR>                           " Exit terminal mode and close terminal
 nnoremap    -vv             :rightbelow vertical terminal<CR>|          " Open vertical terminal
+nnoremap    -w              <C-w><C-w>                                  " Circle window
 nnoremap    -q              :q<CR>                                      " Close window
 execute     'nnoremap ' . g:prog_leader . 'z :call ToggleWrap()<CR>'
 execute     'nnoremap ' . g:prog_leader . 'n :call ToggleLineNumbers()<CR>'
