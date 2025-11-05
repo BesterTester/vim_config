@@ -12,6 +12,15 @@ nnoremap <leader>d :call ConvertFromEpoc()<CR>
 " AUTOCOMMANDS AND FUNCTIONS
 " =========================
 
+function! AlignByDelimiter()
+  let l:delim = input("Enter delimiter (default '='): ")
+  if empty(l:delim)
+    let l:delim = '='
+  endif
+  execute "'<,'>!column -t -s" . shellescape(l:delim) . " -o" . shellescape(l:delim)
+endfunction
+
+
 function! TogglePaste()
 " Toggling the line nubmers
     if &paste 

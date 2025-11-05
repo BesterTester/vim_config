@@ -28,16 +28,17 @@ nnoremap    <S-TAB>         gT
 inoremap    {               {<CR>}<Esc>ko                               " Create a paragraph
 " Escape by jj
 inoremap    jj              <Esc>
-
-
-execute     'nnoremap       ;r       :source ' . g:vim_rc_file         |" Quick saving and loading of config files
-nnoremap    ;i              :call InsertDate()<CR>                      " Input a Datemarker
-nnoremap    ;e              :call ExitVim()<CR>                         " Save all buffers befor exiting vim
 " Do not jump after highlight search
 nnoremap    *               *``
 nnoremap    #               #``
 
 
+execute     'nnoremap       ;r       :source ' . g:vim_rc_file         |" Quick saving and loading of config files
+nnoremap    ;i              :call InsertDate()<CR>                      " Input a Datemarker
+nnoremap    ;e              :call ExitVim()<CR>                         " Save all buffers befor exiting vim
+
+" vnoremap    -a              :!column -t -s= -o=<CR>
+vnoremap    -a :<C-u>call AlignByDelimiter()<CR>
 tnoremap    -e              <C-\><C-n>                                  " Exit terminal mode keep tab open
 tnoremap    -q              <C-\><C-n>:q!<CR>                           " Exit terminal mode and close terminal
 nnoremap    -vv             :rightbelow vertical terminal<CR>|          " Open vertical terminal
