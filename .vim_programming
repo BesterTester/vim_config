@@ -6,6 +6,7 @@
 execute 'nnoremap ' . g:prog_leader . 'b :call CompileAndRunVSplit()<CR>'
 execute 'nnoremap ' . g:prog_leader . 'r :call RerunInVSplit()<CR>'
 execute 'nnoremap ' . g:prog_leader . 'c :call ToggleComment()<CR>'
+execute 'vnoremap ' . g:prog_leader . 'c :call ToggleComment()<CR>'
 
 
 " =========================
@@ -65,23 +66,32 @@ function! RerunInVSplit()
 endfunction
 
 
-" Toggle C/C++ comment on current line
-function! ToggleComment()
-    let l:line = getline('.')
-    let l:stripped = substitute(l:line, '^\s*', '', '')
-    
-    if l:stripped =~# '^//'
-        " Line is commented - remove comment
-        let l:new_line = substitute(l:line, '^\(\s*\)//\s*', '\1', '')
-        call setline('.', l:new_line)
-        echo "Comment removed"
-    else
-        " Line is not commented - add comment
-        let l:indent = matchstr(l:line, '^\s*')
-        let l:new_line = l:indent . '// ' . l:stripped
-        call setline('.', l:new_line)
-        echo "Comment added"
+" Toggle C/C++ comment on single line or visual range
+function! ToggleComment() range
+  " Toggle comment on a single line or a visual range
+  let l:start = a:firstline
+  let l:end = a:lastline
+  for lnum in range(l:start, l:end)
+    let ltxt = getline(lnum)
+    if substitute(ltxt, '\s*', '', '') ==# ''
+      " skip empty lines
+      continue
     endif
+    let lstripped = substitute(ltxt, '^\s*', '', '')
+    if lstripped =~# '^//'
+      " Uncomment this line
+      let lnew = substitute(ltxt, '^\(\s*\)//\s*', '\1', '')
+      call setline(lnum, lnew)
+    else
+      " Comment this line
+      let lindent = matchstr(ltxt, '^\s*')
+      call setline(lnum, lindent . '// ' . lstripped)
+    endif
+  endfor
+  if l:start == l:end
+    echo "Toggled comment on line " . l:start
+  else
+    echo "Toggled comments for lines " . l:start . "-" . l:end
+  endif
 endfunction
-
 
