@@ -2,12 +2,33 @@
 " KEY TO FUNCTION MAPPINGS
 " =========================
 
-nnoremap <Leader>s :call SendBufferToFifo()<CR>
-nnoremap <Leader>c :call ExtractCurrentSQL()<CR>
-nnoremap <Leader>b :call ExecuteBashCommandBuffer('OCI_prod_ULM_access.sh')<CR>
-nnoremap <Leader>B :call ExecuteBashCommandBuffer('OCI_prod_Event_access.sh')<CR>
-nnoremap <Leader>t :call OpenSqlBufferInTab()<CR>
+nnoremap <Leader>s  :call SendBufferToFifo()<CR>
+nnoremap <Leader>c  :call ExtractCurrentSQL()<CR>
+nnoremap <Leader>b  :call ExecuteBashCommandBuffer('OCI_prod_ULM_access.sh')<CR>
+nnoremap <Leader>B  :call ExecuteBashCommandBuffer('OCI_prod_Event_access.sh')<CR>
+nnoremap <Leader>t  :call OpenSqlBufferInTab()<CR>
+nnoremap <Leader>e  :call ConvertToEpoc()<CR>
+nnoremap <leader>d  :call ConvertFromEpoc()<CR>
 
+
+" =========================
+" FUNCTION LIST    
+" =========================
+
+ " ConvertToEpoc()
+ " ConvertFromEpoc()
+ " ExtractCurrentSQL()
+ " OpenSqlBufferInTab()
+ " ExecuteBashCommand(bash_file)
+ " ExecuteBashCommandBuffer(bash_file)
+ " TransposeFixedWidthMatrixWithHeader()
+ " ConvertBufferToCSV()
+ " s:ExtractFields(line, ranges)
+
+ " StartStopConnection()
+ " SendBufferToFifo()
+ " ExtractCurrentSQL_2()
+ "
 
 " =========================
 " SQL BUFFER FUNCTIONS
@@ -120,8 +141,8 @@ endfunction
 " DATABASE FUNCTIONS
 " =========================
 
-" Convert date in register into epoch by linux command
 function! ConvertToEpoc()
+" Convert date in register into epoch by linux command
   let l:timestamp = @"
   let l:cmd = 'date -d "' . l:timestamp . '" +%s%3N'
   let l:epoch = system(l:cmd)
@@ -130,8 +151,9 @@ function! ConvertToEpoc()
   normal! ""p
 endfunction
 
-" Convert epoch under cursor into date
+
 function! ConvertFromEpoc()
+" Convert epoch under cursor into date
   let l:epoch = expand('<cword>')
   if l:epoch =~ '^\d\+$'
     let l:cmd = 'ts=' . l:epoch . '; printf "%s.%03d\n" "$(date -d "@$((ts/1000))" "+%Y-%m-%d %H:%M:%S")" "$((ts%1000))"'
@@ -145,7 +167,7 @@ endfunction
 
 
 function! ExtractCurrentSQL()
-  " Generate timestamp filename in format "output_yyyy-mm-dd_HHMMSS.out"
+" Generate timestamp filename in format "output_yyyy-mm-dd_HHMMSS.out"
   let g:timestamp = strftime("%Y-%m-%d_%H%M%S")
   let g:spool_filename = "/WEB_DATA/tmp_spool/output_" . g:timestamp . ".out"
   " Find the start of the current SQL statement (go up until a semicolon or beginning of file)

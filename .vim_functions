@@ -1,18 +1,47 @@
 " =========================
 " KEY TO FUNCTION MAPPINGS
 " =========================
+"
+nnoremap <Leader>m  :call SendBufferViaEmail()<CR>
+nnoremap <Leader>n  :call RenameFileInTab()<CR>
+execute     'nnoremap ' . g:prog_leader . 'c :call ToggleComment()<CR>'
+execute     'vnoremap ' . g:prog_leader . 'c :call ToggleComment()<CR>'
+execute     'nnoremap ' . g:prog_leader . 'z :call ToggleWrap()<CR>'
+execute     'nnoremap ' . g:prog_leader . 'n :call ToggleLineNumbers()<CR>'
+execute     'nnoremap ' . g:prog_leader . 'p :call TogglePaste()<CR>'
+execute     'nnoremap ' . g:prog_leader . 'c :call ToggleComment()<CR>'
+execute     'vnoremap ' . g:prog_leader . 'a :<C-u>call AlignByDelimiter()<CR>'
 
-nnoremap <Leader>m :call SendBufferViaEmail()<CR>
-nnoremap <Leader>n :call RenameFileInTab()<CR>
-nnoremap <Leader>e :call ConvertToEpoc()<CR>
-nnoremap <leader>d :call ConvertFromEpoc()<CR>
+inoremap <expr> <TAB>                       TabOrCompletion()
 
+nnoremap    ;i                              :call InsertDate()<CR>
+
+
+" =========================
+" FUNCTION LIST    
+" =========================
+
+ " AlignByDelimiter()
+ " TogglePaste()
+ " ToggleLineNumbers()
+ " ToggleWrap()
+ " InsertDate()
+ " HelpInNewTab()
+ " TabOrCompletion()
+ " SendBufferViaEmail()
+ " RenameFileInTab()
+ " DecryptOIDCTokenSmart()
+ " FormatAndInsertJSON()
+ " FormatAndInsertXML()
+ " ToggleComment() range
+ 
 
 " =========================
 " AUTOCOMMANDS AND FUNCTIONS
 " =========================
 
 function! AlignByDelimiter()
+" Align a block of text by a given delimiter; '=' is default
   let l:delim = input("Enter delimiter (default '='): ")
   if empty(l:delim)
     let l:delim = '='
@@ -57,8 +86,8 @@ function! ToggleWrap()
 endfunction
 
 
-" Insert a paragraph seperator and the current date time stamp
 function! InsertDate()
+" Insert a paragraph seperator and the current date time stamp
     let l:time_stamp = strftime('%c')
     let l:seperator = "====================================================================================================\n" 
     execute 'normal! O' . l:seperator . l:time_stamp . "\n"
@@ -72,8 +101,8 @@ augroup HelpInTabs
 augroup END
 
 
-" Only apply to help files
 function! HelpInNewTab()
+" Only apply to help files
     if &buftype == 'help'
         " Convert the help window to a tab
         execute "normal \<C-W>T"
@@ -81,8 +110,8 @@ function! HelpInNewTab()
 endfunction
 
 
-" Do autocompletion if cursor is in word; else add tab
-function! TabOrCompletion()
+function! TabOrCompletion()                           
+" Autocomplete or insert spaces depending on character before cursor
     let col = col('.') - 1
     if col == 0 || getline('.')[col - 1] !~ '\k'
         return "\<TAB>"
@@ -238,27 +267,49 @@ function! FormatAndInsertXML()
 endfunction
 
 
-" Convert date in register into epoch by linux command
-function! ConvertToEpoc()
-  let l:timestamp = @"
-  let l:cmd = 'date -d "' . l:timestamp . '" +%s%3N'
-  let l:epoch = system(l:cmd)
-  let l:epoch = substitute(l:epoch, '\n', '', '')
-  let @" = l:epoch
-  normal! ""p
-endfunction
+function! ToggleComment() range
+  " Extract comment character from commentstring
+  let l:cms = split(&commentstring, '%s')
+  let l:comment_start = trim(get(l:cms, 0, '//'))
+  let l:comment_end = len(l:cms) > 1 ? trim(l:cms[1]) : ''
 
+  " Handle block comments (like /* */ or <!-- -->)
+  let l:is_block_comment = !empty(l:comment_end)
 
-" Convert epoch under cursor into date
-function! ConvertFromEpoc()
-  let l:epoch = expand('<cword>')
-  if l:epoch =~ '^\d\+$'
-    let l:cmd = 'ts=' . l:epoch . '; printf "%s.%03d\n" "$(date -d "@$((ts/1000))" "+%Y-%m-%d %H:%M:%S")" "$((ts%1000))"'
-    let l:date = system(l:cmd)
-    let l:date = substitute(l:date, '\n', '', 'g')
-    execute 'normal! ciw' . l:date
+  if l:is_block_comment
+    " Handle block comments differently
+    echo "Block comments not yet supported"
+    return
+  endif
+
+  " Escape special regex characters
+  let l:comment_escaped = escape(l:comment_start, '/.*~[]^$\')
+
+  let l:start = a:firstline
+  let l:end = a:lastline
+
+  for lnum in range(l:start, l:end)
+    let ltxt = getline(lnum)
+    if substitute(ltxt, '\s*$', '', '') ==# ''
+      continue
+    endif
+
+    let lstripped = substitute(ltxt, '^\s*', '', '')
+
+    if lstripped =~# '^' . l:comment_escaped
+      " Uncomment
+      let lnew = substitute(ltxt, '^\(\s*\)' . l:comment_escaped . '\s*', '\1', '')
+      call setline(lnum, lnew)
+    else
+      " Comment
+      let lindent = matchstr(ltxt, '^\s*')
+      call setline(lnum, lindent . l:comment_start . ' ' . lstripped)
+    endif
+  endfor
+
+  if l:start == l:end
+    echo "Toggled " . l:comment_start . " comment on line " . l:start
   else
-    echo "No valid epoch under cursor"
+    echo "Toggled " . l:comment_start . " comments for lines " . l:start . "-" . l:end
   endif
 endfunction
-

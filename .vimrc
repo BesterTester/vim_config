@@ -1,7 +1,7 @@
 " =========================
-" KEY TO FUNCTION MAPPINGS
-" these mappings are located in there respective configuration file
-" where the function itself is located
+" KEY MAPPINGS TO FUNCTION !!! 
+" These mappings are located in there respective configuration file
+" where the function itself is defined.
 " NOTE: some short cuts might even overlap
 " =========================
 
@@ -20,7 +20,6 @@ noremap     ä               <C-]>                                       " Setti
 " Remap visual block mode to not interfere with windows paste
 nnoremap    vv              <C-v>
 
-inoremap    <expr> <TAB>    TabOrCompletion()                           " Autocomplete or insert spaces depending on character before cursor
 nnoremap    <TAB>           gt                                          " Circle through tabs; TODO: can this bestricted to netrw?
 nnoremap    <S-TAB>         gT
 
@@ -32,27 +31,15 @@ inoremap    jj              <Esc>
 nnoremap    *               *``
 nnoremap    #               #``
 
+execute     'nnoremap       ;r       :source ' . g:vim_rc_file|         " Quick saving and loading of config files
 
-execute     'nnoremap       ;r       :source ' . g:vim_rc_file         |" Quick saving and loading of config files
-nnoremap    ;i              :call InsertDate()<CR>                      " Input a Datemarker
-nnoremap    ;e              :call ExitVim()<CR>                         " Save all buffers befor exiting vim
-
-" vnoremap    -a              :!column -t -s= -o=<CR>
-vnoremap    -a :<C-u>call AlignByDelimiter()<CR>
 tnoremap    -e              <C-\><C-n>                                  " Exit terminal mode keep tab open
 tnoremap    -q              <C-\><C-n>:q!<CR>                           " Exit terminal mode and close terminal
 nnoremap    -vv             :rightbelow vertical terminal<CR>|          " Open vertical terminal
 nnoremap    -w              <C-w><C-w>                                  " Circle window
 nnoremap    -q              :q<CR>                                      " Close window
-execute     'nnoremap ' . g:prog_leader . 'z :call ToggleWrap()<CR>'
-execute     'nnoremap ' . g:prog_leader . 'n :call ToggleLineNumbers()<CR>'
-execute     'nnoremap ' . g:prog_leader . 'p :call TogglePaste()<CR>'
-execute     'nnoremap ' . g:prog_leader . 'c :call ToggleComment()<CR>'
 
-" Add empty line below stay in normal mode; except in command line window
-" nnoremap <expr> <Enter> &buftype ==# 'nofile' && &filetype ==# 'vim' ? '<Enter>' : 'o<ESC>'
-" nnoremap <expr> <Enter> bufname('%') ==# '[Command Line]' ? '<Enter>' : 'o<ESC>'
-nnoremap <expr> <Enter> (&buftype ==# '') ? 'o<ESC>' : '<Enter>'
+nnoremap <expr> <Enter> (&buftype ==# '') ? 'o<ESC>' : '<Enter>'|       " Add new line by {Enter}; except in special buffers
 
 " set the cursor shape
 let &t_ti.="\e[1 q"
@@ -72,13 +59,8 @@ let g:netrw_liststyle = 0
 let g:netrw_winsize   = 30
 let g:netrw_keepdir   = 0
 
-" Add this to your .vimrc
 let g:netrw_browsex_viewer = 'terminal'
 
-
-" Filetype and plugins
-"
-"
 filetype on                                         " Enable type file detection.
 filetype plugin on                                  " Enable plugins and load plugin for the detected file type.
 filetype indent on                                  " Load an indent file for the detected file type.
@@ -87,8 +69,11 @@ filetype plugin indent on
 " Syntax and colors
 syntax on                                           " Set syntax on and color scheme
 execute 'colorscheme ' . g:color_scheme            |" Set color scheme based on ~/.vimrc setting
+" Set vim syntax highlighting for each vim file
 autocmd BufRead,BufNewFile .vim* set filetype=vim
 
+autocmd FileType c      setlocal commentstring=//\ %s
+autocmd FileType sql    setlocal commentstring=--\ %s
 
 " =========================
 " INDENTATION AND TABS | DISPLAY SETTINGS
@@ -102,7 +87,6 @@ set showbreak=↪\                                    " Show a line break indica
 set hlsearch                                        " Highlight search results
 set incsearch                                       " Incremental search while typing
 set showcmd                                         " Show partial commands in status line
-set showcmd                                         " Show partial commands in status line
 set matchpairs+=<:>                                 " Add < > to matching pairs
 set number                                          " Show line numbers
 set clipboard=unnamedplus                           " Use system clipboard
@@ -111,8 +95,6 @@ set cursorline
 highlight CursorLine term=standout cterm=bold ctermbg=1
 highlight ColorColumn term=bold cterm=bold ctermbg=1
 
-" Set vim syntax highlighting for each vim file
-autocmd BufNewFile,BufRead .vim* set filetype=vim
 
 " =========================
 " FILE MANAGEMENT

@@ -1,14 +1,36 @@
 " =========================
+" WINDOW SPECIFIC CONFIGURATION
+" =========================
+
+" Force yank to clipboard
+set clipboard=unnamedplus
+nnoremap    y               "+y
+nnoremap    yy              "+yy
+nnoremap    Y               "+Y
+vnoremap    y               "+y
+
+
+" =========================
 " AUTOCOMMANDS AND FUNCTIONS
 " =========================
 
 " Autocommand to call the SaveSession function on Vim exit
 autocmd VimLeave * call ExitVim()
 
+nnoremap    ;e              :call ExitVim()<CR>                         " Save all buffers befor exiting vim
 
+
+" =========================
+" FUNCTION LIST    
+" =========================
+
+  " ExitVim()
+  " ActivateNetrwTab()
+
+
+function! ExitVim()
 " Function to save all unsaved files for recovery in the next session
 " and exit vim
-function! ExitVim()
   let l:counter = 1
   let l:saved = 0
   let l:target_dir = expand('~/repositories')
