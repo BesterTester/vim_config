@@ -11,8 +11,6 @@ execute 'nnoremap ' . g:prog_leader . 'r :call RerunInVSplit()<CR>'
 " FUNCTION LIST    
 " =========================
 
- " CompileC()
- " ReRunC()
  " CompileAndRunVSplit()
  " RerunInVSplit()
 
@@ -23,52 +21,48 @@ execute 'nnoremap ' . g:prog_leader . 'r :call RerunInVSplit()<CR>'
 
 let g:out_esc       = ''
 
-" Save the current buffer and run the gcc compiler with the file
-function! CompileC()
-    update
-    let g:filename = expand('%:p:r')
-    let compile_cmd = 'gcc ' . shellescape(expand('%:p')) . ' -o ' . shellescape(g:filename) . " -lm"
-    echo "Compiling: " . compile_cmd
-    let result = system(compile_cmd)
-    if v:shell_error == 0
-        echo "Compilation successful. Running..."
-        execute 'vertical rightbelow terminal ' . g:filename
-    else
-        echo "Compilation failed!"
-        echo result
-    endif
-endfunction
-
-
-" Rerun the last compiled C program
-function! ReRunC()
-    if exists('g:filename') && !empty(g:filename)
-        execute 'quit'
-        execute 'vertical rightbelow terminal ' . g:filename
-    else
-        echo "Could not execute file: " . g:filename
-    endif
-endfunction
-
-
 function! CompileAndRunVSplit()
     update
-    let l:src           = expand('%:p')
-    let l:src_esc       = shellescape(l:src)
-    let l:out           = expand('%:p:r')
-    let g:out_esc       = shellescape(l:out)
-    let l:compile_cmd   = 'bash -lc "gcc  ' . l:src_esc . ' -o ' . g:out_esc . ' -lm && ' . g:out_esc . '"'
-    execute 'vertical rightbelow terminal ' . l:compile_cmd
+    let l:src = expand('%:p')
+    let l:src_esc = shellescape(l:src)
+    let l:filetype = &filetype
+    
+    if l:filetype ==# 'c' || l:filetype ==# 'cpp'
+        " C/C++ compilation and execution
+        let l:out = expand('%:p:r')
+        let g:out_esc = shellescape(l:out)
+        let g:last_filetype = 'compiled'
+        let l:cmd = 'bash -lc "gcc ' . l:src_esc . ' -o ' . g:out_esc . ' -lm && ' . g:out_esc . '"'
+        
+    elseif l:filetype ==# 'lisp'
+        " Lisp script execution
+        let g:out_esc = l:src_esc
+        let g:last_filetype = 'interpreted'
+        let l:cmd = 'bash -lc "/usr/bin/sbcl --script ' . l:src_esc . '"'
+        
+    else
+        echo "Unsupported file type: " . l:filetype
+        return
+    endif
+    
+    execute 'vertical rightbelow terminal ' . l:cmd
 endfunction
 
-
 function! RerunInVSplit()
-    "   update
-    "   let l:src           = expand('%:p')
-    "   let l:src_esc       = shellescape(l:src)
-    "   let l:out           = expand('%:p:r')
-    "   let g:out_esc       = shellescape(l:out)
-    let l:rerun_cmd   = 'bash -lc "' . g:out_esc . '"'
+    if !exists('g:last_filetype')
+        echo "No program has been run yet"
+        return
+    endif
+    
     execute 'quit'
+    
+    if g:last_filetype ==# 'compiled'
+        " Re-run compiled executable
+        let l:rerun_cmd = 'bash -lc "' . g:out_esc . '"'
+    elseif g:last_filetype ==# 'interpreted'
+        " Re-run interpreted script
+        let l:rerun_cmd = 'bash -lc "/usr/bin/sbcl --script ' . g:out_esc . '"'
+    endif
+    
     execute 'vertical rightbelow terminal ' . l:rerun_cmd
 endfunction

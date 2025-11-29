@@ -5,12 +5,11 @@
 nnoremap <Leader>m  :call SendBufferViaEmail()<CR>
 nnoremap <Leader>n  :call RenameFileInTab()<CR>
 execute     'nnoremap ' . g:prog_leader . 'c :call ToggleComment()<CR>'
-execute     'vnoremap ' . g:prog_leader . 'c :call ToggleComment()<CR>'
-execute     'nnoremap ' . g:prog_leader . 'z :call ToggleWrap()<CR>'
 execute     'nnoremap ' . g:prog_leader . 'n :call ToggleLineNumbers()<CR>'
 execute     'nnoremap ' . g:prog_leader . 'p :call TogglePaste()<CR>'
-execute     'nnoremap ' . g:prog_leader . 'c :call ToggleComment()<CR>'
+execute     'nnoremap ' . g:prog_leader . 'z :call ToggleWrap()<CR>'
 execute     'vnoremap ' . g:prog_leader . 'a :<C-u>call AlignByDelimiter()<CR>'
+execute     'vnoremap ' . g:prog_leader . 'c :call ToggleComment()<CR>'
 
 inoremap <expr> <TAB>                       TabOrCompletion()
 

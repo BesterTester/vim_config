@@ -18,7 +18,7 @@ nnoremap    /               /\v
 cnoremap    %s/             %s/\v
 noremap     ä               <C-]>                                       " Settings for german keyboard; follow links
 " Remap visual block mode to not interfere with windows paste
-nnoremap    vv              <C-v>
+nnoremap    vv              <C-v>|
 
 nnoremap    <TAB>           gt                                          " Circle through tabs; TODO: can this bestricted to netrw?
 nnoremap    <S-TAB>         gT

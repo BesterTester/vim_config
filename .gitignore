@@ -1,0 +1,18 @@
+# Vim swap files
+*.swp
+*.swo
+*~
+.*.swp
+.*.swo
+
+# Vim undo files
+*.un~
+.netrwhist
+
+# Local overrides (system-specific)
+.vim_local*
+*_local.vim
+
+# OS files
+.DS_Store
+Thumbs.db
