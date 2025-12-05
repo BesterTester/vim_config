@@ -9,7 +9,8 @@ execute     'nnoremap ' . g:prog_leader . 'n :call ToggleLineNumbers()<CR>'
 execute     'nnoremap ' . g:prog_leader . 'p :call TogglePaste()<CR>'
 execute     'nnoremap ' . g:prog_leader . 'z :call ToggleWrap()<CR>'
 execute     'vnoremap ' . g:prog_leader . 'a :<C-u>call AlignByDelimiter()<CR>'
-execute     'vnoremap ' . g:prog_leader . 'c :call ToggleComment()<CR>'
+execute     'nnoremap ' . g:prog_leader . 'f :call FilterLinesByPattern()<CR>'
+execute     'xnoremap ' . g:prog_leader . 'f :<C-U>call FilterLinesByPattern(visualmode())<CR>'
 
 inoremap <expr> <TAB>                       TabOrCompletion()
 
@@ -20,19 +21,21 @@ nnoremap    ;i                              :call InsertDate()<CR>
 " FUNCTION LIST    
 " =========================
 
- " AlignByDelimiter()
- " TogglePaste()
- " ToggleLineNumbers()
- " ToggleWrap()
- " InsertDate()
- " HelpInNewTab()
- " TabOrCompletion()
  " SendBufferViaEmail()
  " RenameFileInTab()
+
+ " AlignByDelimiter()
  " DecryptOIDCTokenSmart()
+ " FilterLinesByPattern()
  " FormatAndInsertJSON()
  " FormatAndInsertXML()
+ " HelpInNewTab()
+ " InsertDate()
+ " TabOrCompletion()
  " ToggleComment() range
+ " ToggleLineNumbers()
+ " TogglePaste()
+ " ToggleWrap()
  
 
 " =========================
@@ -180,6 +183,25 @@ function! RenameFileInTab()
   " 
   "   echo "\n\nYou chose:" nicknum
   " endif
+endfunction
+
+
+function! FilterLinesByPattern(...) abort
+" Delete lines globally using pattern from visual selection (if provided) or unnamed register
+  " If called from Visual mode, a:1 will be non-empty (e.g., 'v', 'V', or "\<C-v>")
+  if a:0 && a:1 !=# ''
+    " Save and yank current visual selection into register z
+    let l:save_reg = @"
+    normal! gv"zy
+    let l:pattern = '\V' . escape(@z, '\')
+    let @" = l:save_reg
+  else
+    " Normal mode: use unnamed register as the literal pattern
+    let l:pattern = '\V' . escape(getreg('"'), '\')
+  endif
+
+  " Delete all lines in the file that match the pattern
+  execute 'g/' . l:pattern . '/d'
 endfunction
 
 
