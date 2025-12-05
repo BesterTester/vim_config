@@ -4,13 +4,14 @@
 "
 nnoremap    <Leader>m               :call SendBufferViaEmail()<CR>
 nnoremap    <Leader>n               :call RenameFileInTab()<CR>
-nnoremap    -c                      :call ToggleComment()<CR>'
-nnoremap    -n                      :call ToggleLineNumbers()<CR>'
-nnoremap    -p                      :call TogglePaste()<CR>'
-nnoremap    -z                      :call ToggleWrap()<CR>'
-vnoremap    -a                      :<C-u>call AlignByDelimiter()<CR>'
-nnoremap    -f                      :call FilterLinesByPattern()<CR>'
-xnoremap    -f                      :<C-U>call FilterLinesByPattern(visualmode())<CR>'
+nnoremap    -c                      :call ToggleComment()<CR>
+vnoremap    -c                      :call ToggleComment()<CR>
+nnoremap    -n                      :call ToggleLineNumbers()<CR>
+nnoremap    -p                      :call TogglePaste()<CR>
+nnoremap    -z                      :call ToggleWrap()<CR>
+vnoremap    -a                      :<C-u>call AlignByDelimiter()<CR>
+nnoremap    -f                      :call FilterLinesByPattern()<CR>
+xnoremap    -f                      :<C-U>call FilterLinesByPattern(visualmode())<CR>
 nnoremap    -F                      :call FilterLinesByPattern('not')<CR>
 xnoremap    -F                      :<C-U>call FilterLinesByPattern(visualmode(), 'not')<CR>
 
