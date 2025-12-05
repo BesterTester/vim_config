@@ -6,7 +6,6 @@
 " =========================
 
 let mapleader = ','             " Remap the Leader to comma
-let g:prog_leader = '-'         " Set an additional leader
 
 
 " =========================
@@ -92,7 +91,7 @@ set number                                          " Show line numbers
 set clipboard=unnamedplus                           " Use system clipboard
 
 set cursorline
-highlight CursorLine term=standout cterm=bold ctermbg=1
+highlight CursorLine term=standout cterm=bold ctermbg=0
 highlight ColorColumn term=bold cterm=bold ctermbg=1
 
 

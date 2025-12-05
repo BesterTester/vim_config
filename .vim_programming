@@ -3,12 +3,27 @@
 " =========================
 
 " Programming specific mappings
-execute 'nnoremap ' . g:prog_leader . 'b :call CompileAndRunVSplit()<CR>'
-execute 'nnoremap ' . g:prog_leader . 'r :call RerunInVSplit()<CR>'
+nnoremap -b :call CompileAndRunVSplit()<CR>
+nnoremap -r :call RerunInVSplit()<CR>
 
 
 " =========================
-" FUNCTION LIST    
+" PLUGIN CONFIGURATION    
+" =========================
+
+call plug#begin('~/.vim/plugged')
+
+" Vlime - Common Lisp development environment
+Plug 'vlime/vlime', {'rtp': 'vim/'}
+
+" Paredit - structured editing for Lisp
+Plug 'kovisoft/paredit'
+
+call plug#end()
+
+
+" =========================
+" FUNCTION LIST
 " =========================
 
  " CompileAndRunVSplit()
