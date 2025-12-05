@@ -2,19 +2,21 @@
 " KEY TO FUNCTION MAPPINGS
 " =========================
 "
-nnoremap <Leader>m  :call SendBufferViaEmail()<CR>
-nnoremap <Leader>n  :call RenameFileInTab()<CR>
-execute     'nnoremap ' . g:prog_leader . 'c :call ToggleComment()<CR>'
-execute     'nnoremap ' . g:prog_leader . 'n :call ToggleLineNumbers()<CR>'
-execute     'nnoremap ' . g:prog_leader . 'p :call TogglePaste()<CR>'
-execute     'nnoremap ' . g:prog_leader . 'z :call ToggleWrap()<CR>'
-execute     'vnoremap ' . g:prog_leader . 'a :<C-u>call AlignByDelimiter()<CR>'
-execute     'nnoremap ' . g:prog_leader . 'f :call FilterLinesByPattern()<CR>'
-execute     'xnoremap ' . g:prog_leader . 'f :<C-U>call FilterLinesByPattern(visualmode())<CR>'
+nnoremap    <Leader>m               :call SendBufferViaEmail()<CR>
+nnoremap    <Leader>n               :call RenameFileInTab()<CR>
+nnoremap    -c                      :call ToggleComment()<CR>'
+nnoremap    -n                      :call ToggleLineNumbers()<CR>'
+nnoremap    -p                      :call TogglePaste()<CR>'
+nnoremap    -z                      :call ToggleWrap()<CR>'
+vnoremap    -a                      :<C-u>call AlignByDelimiter()<CR>'
+nnoremap    -f                      :call FilterLinesByPattern()<CR>'
+xnoremap    -f                      :<C-U>call FilterLinesByPattern(visualmode())<CR>'
+nnoremap    -F                      :call FilterLinesByPattern('not')<CR>
+xnoremap    -F                      :<C-U>call FilterLinesByPattern(visualmode(), 'not')<CR>
 
-inoremap <expr> <TAB>                       TabOrCompletion()
+inoremap <expr> <TAB>               TabOrCompletion()
 
-nnoremap    ;i                              :call InsertDate()<CR>
+nnoremap    ;i                      :call InsertDate()<CR>
 
 
 " =========================
@@ -187,9 +189,14 @@ endfunction
 
 
 function! FilterLinesByPattern(...) abort
-" Delete lines globally using pattern from visual selection (if provided) or unnamed register
-  " If called from Visual mode, a:1 will be non-empty (e.g., 'v', 'V', or "\<C-v>")
-  if a:0 && a:1 !=# ''
+" Delete matching lines in the whole file.
+" Supports Visual-mode pattern and optional 'not' parameter to invert the match.
+  " Determine if we were invoked from Visual mode and if 'not' was requested.
+  let l:is_visual = (a:0 >= 1 && a:1 !=# '')
+  " Allow passing only 'not' (Normal mode), or as the second arg when Visual
+  let l:not = (a:0 >= 2 && a:2 ==# 'not') || (a:0 == 1 && a:1 ==# 'not')
+
+  if l:is_visual
     " Save and yank current visual selection into register z
     let l:save_reg = @"
     normal! gv"zy
@@ -200,8 +207,11 @@ function! FilterLinesByPattern(...) abort
     let l:pattern = '\V' . escape(getreg('"'), '\')
   endif
 
-  " Delete all lines in the file that match the pattern
-  execute 'g/' . l:pattern . '/d'
+  " Build the global command, invert with g! if 'not' is set
+  let l:gcmd = 'g' . (l:not ? '!' : '')
+
+  " Delete all lines in the file that match (or do not match) the pattern
+  execute l:gcmd . '/' . l:pattern . '/d'
 endfunction
 
 
