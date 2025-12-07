@@ -248,18 +248,59 @@ function! ExecuteBashCommandBuffer(bash_file)
     return
   endif
 
-  " Read the first line from the actual sql_buffer file
+  " Read all lines from the actual sql_buffer file
   let sql_buffer_lines = readfile(g:sql_buffer)
   if empty(sql_buffer_lines)
     echo "SQL buffer file is empty"
     return
   endif
 
-  " Extract the filename from the spool command
+  " Extract the filename from the spool command (first line)
   let new_spool_filename = matchstr(sql_buffer_lines[0], '\vspool\s+\zs\S+')
   if empty(new_spool_filename)
     echo "Could not extract spool filename from sql_buffer"
     return
+  endif
+
+  " Check for data-modifying SQL keywords
+  let dangerous_keywords = ['INSERT', 'UPDATE', 'DELETE', 'MERGE', 'DROP', 'TRUNCATE', 'ALTER']
+  let found_dangerous = 0
+  let found_keyword = ''
+
+  for line in sql_buffer_lines
+    " Convert line to uppercase for case-insensitive matching
+    let upper_line = toupper(line)
+    " Skip comment lines
+    if upper_line =~ '^\s*--' || upper_line =~ '^\s*REM'
+      continue
+    endif
+
+    for keyword in dangerous_keywords
+      " Match keyword as whole word (with word boundaries)
+      if upper_line =~ '\<' . keyword . '\>'
+        let found_dangerous = 1
+        let found_keyword = keyword
+        break
+      endif
+    endfor
+
+    if found_dangerous
+      break
+    endif
+  endfor
+
+  " If dangerous SQL found, prompt for confirmation
+  if found_dangerous
+    echohl WarningMsg
+    echo "WARNING: SQL contains data-modifying keyword: " . found_keyword
+    echohl None
+    let response = input("Do you really want to execute this SQL? (yes/no): ")
+
+    if response !=# 'yes'
+      echo "\nExecution cancelled by user"
+      return
+    endif
+    echo "\nProceeding with execution..."
   endif
 
   " Execute the bash command
@@ -274,8 +315,9 @@ function! ExecuteBashCommandBuffer(bash_file)
   let cmd = 'cat ' . shellescape(g:sql_buffer) . ' >> ' . shellescape(new_spool_filename)
   call system(cmd)
 
-  " Open the result file
-  execute 'edit ' . new_spool_filename
+  " Close current buffer and open the result file
+  execute 'quit'
+  execute 'tabnew ' . new_spool_filename
   setlocal nowrap
   setlocal nonumber
 endfunction
