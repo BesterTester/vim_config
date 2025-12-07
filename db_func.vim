@@ -2,27 +2,27 @@
 " KEY TO FUNCTION MAPPINGS
 " =========================
 
-nnoremap <Leader>s  :call SendBufferToFifo()<CR>
+nnoremap <leader>d  :call ConvertFromEpoc()<CR>
+nnoremap <Leader>e  :call ConvertToEpoc()<CR>
 nnoremap <Leader>c  :call ExtractCurrentSQL()<CR>
 nnoremap <Leader>b  :call ExecuteBashCommandBuffer('OCI_prod_ULM_access.sh')<CR>
 nnoremap <Leader>B  :call ExecuteBashCommandBuffer('OCI_prod_Event_access.sh')<CR>
 nnoremap <Leader>t  :call OpenSqlBufferInTab()<CR>
-nnoremap <Leader>e  :call ConvertToEpoc()<CR>
-nnoremap <leader>d  :call ConvertFromEpoc()<CR>
 
+nnoremap <Leader>s  :call SendBufferToFifo()<CR>
 
 " =========================
 " FUNCTION LIST    
 " =========================
 
- " ConvertToEpoc()
+ " ConvertBufferToCSV()
  " ConvertFromEpoc()
- " ExtractCurrentSQL()
- " OpenSqlBufferInTab()
+ " ConvertToEpoc()
  " ExecuteBashCommand(bash_file)
  " ExecuteBashCommandBuffer(bash_file)
+ " ExtractCurrentSQL()
+ " OpenSqlBufferInTab()
  " TransposeFixedWidthMatrixWithHeader()
- " ConvertBufferToCSV()
  " s:ExtractFields(line, ranges)
 
  " StartStopConnection()
@@ -240,31 +240,44 @@ endfunction
 
 function! ExecuteBashCommandBuffer(bash_file)
   " Use the currently modified sql_buffer.sql file to execute the SQL
-  " The spool file name should be modified because it most likely exists
   execute 'update'
 
   " Check if sql_buffer file exists
-  if filereadable(g:sql_buffer)
-    " Read the first line of sql_buffer
-    let firstline = getline(1)
-    " Extract the filename from the spool command (assumes: spool <filename>)
-    let new_spool_filename = matchstr(firstline, '\vspool\s+\zs\S+')
-    if empty(new_spool_filename)
-       echo "Could not extract spool filename from sql_buffer"
-       return
-    endif
-    let cmd = '/home/tbp-web/awagner1/DATABASE/' . a:bash_file . ' ' . shellescape(g:sql_buffer)
-    let output = system(cmd)
-    " Append SQL from sql_buffer to the spool_filename
-    let cmd = 'cat ' . shellescape(g:sql_buffer) . ' >> ' . shellescape(new_spool_filename)
-    let output = system(cmd)
-    execute 'quit'
-    execute 'tabnew ' . new_spool_filename
-    setlocal nowrap
-    setlocal nonumber
-  else
+  if !filereadable(g:sql_buffer)
     echo "No SQL buffer file has been created yet"
+    return
   endif
+
+  " Read the first line from the actual sql_buffer file
+  let sql_buffer_lines = readfile(g:sql_buffer)
+  if empty(sql_buffer_lines)
+    echo "SQL buffer file is empty"
+    return
+  endif
+
+  " Extract the filename from the spool command
+  let new_spool_filename = matchstr(sql_buffer_lines[0], '\vspool\s+\zs\S+')
+  if empty(new_spool_filename)
+    echo "Could not extract spool filename from sql_buffer"
+    return
+  endif
+
+  " Execute the bash command
+  let cmd = '/home/tbp-web/awagner1/DATABASE/' . a:bash_file . ' ' . shellescape(g:sql_buffer)
+  let output = system(cmd)
+  if v:shell_error != 0
+    echo "Error executing bash command: " . output
+    return
+  endif
+
+  " Append SQL from sql_buffer to the spool_filename
+  let cmd = 'cat ' . shellescape(g:sql_buffer) . ' >> ' . shellescape(new_spool_filename)
+  call system(cmd)
+
+  " Open the result file
+  execute 'edit ' . new_spool_filename
+  setlocal nowrap
+  setlocal nonumber
 endfunction
 
 
