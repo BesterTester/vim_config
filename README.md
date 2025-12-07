@@ -22,9 +22,9 @@ Source the appropriate configuration files from your system-specific `.vimrc`.
 set colorscheme
 let g:color_scheme = 'slate'
 
-let g:vim_rc_file = '~/awagner1/_vimrc'
+let g:vim_rc_file = '~/awagner1/.vimrc'
 
-source C:/Users/Andy.Wagner3/repositories/vim_config/.vimrc
-source C:/Users/Andy.Wagner3/repositories/vim_config/.vim_functions
-source C:/Users/Andy.Wagner3/repositories/vim_config/.vim_programming
+source C:/Users/Andy.Wagner3/repositories/vim_config/vimrc.vim
+source C:/Users/Andy.Wagner3/repositories/vim_config/functions.vim
+source C:/Users/Andy.Wagner3/repositories/vim_config/programming.vim
 

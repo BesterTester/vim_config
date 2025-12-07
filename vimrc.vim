@@ -7,6 +7,8 @@
 
 let mapleader = ','             " Remap the Leader to comma
 
+" Command to list all functions defined in *.vim files under g:vim_rc_dir
+command! ListMyFuncs execute 'vimgrep /^function/ ' . g:vim_rc_dir . '/*.vim' | copen
 
 " =========================
 " KEYBOARD MAPPING
