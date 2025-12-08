@@ -263,7 +263,7 @@ function! ExecuteBashCommandBuffer(bash_file)
   endif
 
   " Check for data-modifying SQL keywords
-  let dangerous_keywords = ['INSERT', 'UPDATE', 'DELETE', 'MERGE', 'DROP', 'TRUNCATE', 'ALTER']
+  let dangerous_keywords = ['INSERT', 'UPDATE', 'DELETE', 'MERGE', 'DROP', 'TRUNCATE']
   let found_dangerous = 0
   let found_keyword = ''
 
