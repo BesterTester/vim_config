@@ -172,13 +172,21 @@ if exists("+showtabline")
             let bufnr = buflist[winnr - 1]
             let file = bufname(bufnr)
             let buftype = getbufvar(bufnr, 'buftype')
-            if buftype == 'nofile'
-                if file =~ '\/.'
-                    let file = substitute(file, '.*\/\ze.', '', '')
-                endif
+
+            " If the buffer is netrw (filetype or name), show NETRW as tab name
+            let filetype = getbufvar(bufnr, '&filetype')
+            if filetype == 'netrw' || file =~# '\/netrw\/'
+                let file = 'NETRW'
             else
-                let file = fnamemodify(file, ':p:t')
+                if buftype == 'nofile'
+                    if file =~ '\/.'
+                        let file = substitute(file, '.*\/\ze.', '', '')
+                    endif
+                else
+                    let file = fnamemodify(file, ':p:t')
+                endif
             endif
+
             if file == ''
                 let file = '[No Name]'
             endif
