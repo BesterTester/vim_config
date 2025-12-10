@@ -74,7 +74,7 @@ execute 'colorscheme ' . g:color_scheme            |" Set color scheme based on 
 autocmd BufRead,BufNewFile .vim* set filetype=vim
 
 autocmd FileType c      setlocal commentstring=//\ %s
-autocmd FileType sql    setlocal commentstring=--\ %s
+autocmd VimEnter * if &filetype == 'sql' | setlocal commentstring=--\ %s | endif
 
 " =========================
 " INDENTATION AND TABS | DISPLAY SETTINGS
