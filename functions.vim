@@ -300,9 +300,14 @@ endfunction
 
 
 function! ToggleComment() range
-  " Extract comment character from commentstring
-  let l:cms = split(&commentstring, '%s')
-  let l:comment_start = trim(get(l:cms, 0, '//'))
+  " Force SQL commentstring if filetype is sql
+  if &filetype ==# 'sql'
+    let l:comment_start = '--'
+  else
+    " Extract comment character from commentstring
+    let l:cms = split(&commentstring, '%s')
+    let l:comment_start = trim(get(l:cms, 0, '//'))
+  endif
 
   " Escape special regex characters
   let l:comment_escaped = escape(l:comment_start, '/.*~[]^$\')
