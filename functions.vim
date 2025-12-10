@@ -303,108 +303,7 @@ function! ToggleComment() range
   " Extract comment character from commentstring
   let l:cms = split(&commentstring, '%s')
   let l:comment_start = trim(get(l:cms, 0, '//'))
-  let l:comment_end = len(l:cms) > 1 ? trim(l:cms[1]) : ''
 
-  " Determine if this is a block comment (has both start and end markers that are different)
-  let l:is_block_comment = !empty(l:comment_end) && l:comment_start !=# l:comment_end
-
-  if l:is_block_comment
-    let l:start = a:firstline
-    let l:end = a:lastline
-
-    " Escape special regex characters for matching
-    let l:start_esc = escape(l:comment_start, '/.*~[]^$\')
-    let l:end_esc = escape(l:comment_end, '/.*~[]^$\')
-
-    " Check if this is a visual selection (multi-line) or single line in normal mode
-    if l:start != l:end
-      " VISUAL MODE: Multi-line selection
-      let l:first_line = getline(l:start)
-      let l:last_line = getline(l:end)
-      let l:indent = matchstr(l:first_line, '^\s*')
-      
-      let l:first_content = substitute(l:first_line, '^\s*', '', '')
-      let l:last_content = substitute(l:last_line, '^\s*', '', '')
-
-      " Check if already commented (comment markers on first and last lines)
-      if l:first_content =~# '^' . l:start_esc && l:last_content =~# l:end_esc . '$'
-        " UNCOMMENT: Remove comment markers
-        let l:new_first = substitute(l:first_line, '^\(\s*\)' . l:start_esc . '\s*', '\1', '')
-        call setline(l:start, l:new_first)
-        let l:new_last = substitute(l:last_line, '\s*' . l:end_esc . '\s*$', '', '')
-        call setline(l:end, l:new_last)
-        echo "Uncommented lines " . l:start . "-" . l:end
-      else
-        " COMMENT: Add comment markers on separate lines
-        call append(l:start - 1, l:indent . l:comment_start)
-        call append(l:end + 1, l:indent . l:comment_end)
-        echo "Commented lines " . l:start . "-" . l:end
-      endif
-      return
-    endif
-
-    " NORMAL MODE: Single line
-    " Check if cursor is within a block comment
-    let l:current_line = l:start
-    let l:comment_start_line = -1
-    let l:comment_end_line = -1
-
-    " Search backwards for comment start
-    for lnum in range(l:current_line, 1, -1)
-      let l:line = getline(lnum)
-      let l:content = substitute(l:line, '^\s*', '', '')
-      
-      " Found comment start marker on its own line
-      if l:content =~# '^' . l:start_esc . '\s*$'
-        let l:comment_start_line = lnum
-        break
-      endif
-      
-      " If we find content that's not part of a comment structure, stop searching
-      if l:content =~# l:end_esc . '\s*$'
-        " Found an end marker first, so we're not in a comment block
-        break
-      endif
-    endfor
-
-    " If we found a comment start, search forward for comment end
-    if l:comment_start_line > 0
-      for lnum in range(l:current_line, line('$'))
-        let l:line = getline(lnum)
-        let l:content = substitute(l:line, '^\s*', '', '')
-        
-        " Found comment end marker on its own line
-        if l:content =~# '^\s*' . l:end_esc . '\s*$' || l:content =~# l:end_esc . '\s*$'
-          let l:comment_end_line = lnum
-          break
-        endif
-      endfor
-    endif
-
-    " If we're inside a block comment, remove it
-    if l:comment_start_line > 0 && l:comment_end_line > 0
-      " Remove the comment end line first (to preserve line numbers)
-      execute l:comment_end_line . 'delete'
-      " Remove the comment start line
-      execute l:comment_start_line . 'delete'
-      echo "Uncommented block (lines " . l:comment_start_line . "-" . l:comment_end_line . ")"
-      return
-    endif
-
-    " Not inside a block comment, so comment the single line
-    " Use the same format as multi-line: markers on separate lines
-    let l:line = getline(l:start)
-    let l:indent = matchstr(l:line, '^\s*')
-    
-    " Insert comment start above
-    call append(l:start - 1, l:indent . l:comment_start)
-    " Insert comment end below (adjust line number since we added a line)
-    call append(l:start + 1, l:indent . l:comment_end)
-    echo "Commented line " . l:start
-    return
-  endif
-
-  " Handle single-line comments (like // or #)
   " Escape special regex characters
   let l:comment_escaped = escape(l:comment_start, '/.*~[]^$\')
 
@@ -413,19 +312,21 @@ function! ToggleComment() range
 
   for lnum in range(l:start, l:end)
     let ltxt = getline(lnum)
+    
+    " Skip empty lines
     if substitute(ltxt, '\s*$', '', '') ==# ''
       continue
     endif
 
     let lstripped = substitute(ltxt, '^\s*', '', '')
+    let lindent = matchstr(ltxt, '^\s*')
 
     if lstripped =~# '^' . l:comment_escaped
-      " Uncomment
-      let lnew = substitute(ltxt, '^\(\s*\)' . l:comment_escaped . '\s*', '\1', '')
+      " Uncomment: remove the comment marker and one space
+      let lnew = substitute(ltxt, '^\(\s*\)' . l:comment_escaped . '\s\?', '\1', '')
       call setline(lnum, lnew)
     else
-      " Comment
-      let lindent = matchstr(ltxt, '^\s*')
+      " Comment: add the comment marker with one space
       call setline(lnum, lindent . l:comment_start . ' ' . lstripped)
     endif
   endfor
@@ -436,3 +337,4 @@ function! ToggleComment() range
     echo "Toggled " . l:comment_start . " comments for lines " . l:start . "-" . l:end
   endif
 endfunction
+
