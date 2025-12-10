@@ -305,8 +305,8 @@ function! ToggleComment() range
   let l:comment_start = trim(get(l:cms, 0, '//'))
   let l:comment_end = len(l:cms) > 1 ? trim(l:cms[1]) : ''
 
-  " Handle block comments (like /* */ or <!-- -->)
-  let l:is_block_comment = !empty(l:comment_end)
+  " Determine if this is a block comment (has both start and end markers that are different)
+  let l:is_block_comment = !empty(l:comment_end) && l:comment_start !=# l:comment_end
 
   if l:is_block_comment
     let l:start = a:firstline
