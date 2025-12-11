@@ -89,6 +89,7 @@ set hlsearch                                        " Highlight search results
 set incsearch                                       " Incremental search while typing
 set showcmd                                         " Show partial commands in status line
 set matchpairs+=<:>                                 " Add < > to matching pairs
+set wildmode=longest,list                           " List all matches without completing, then each full match
 set number                                          " Show line numbers
 set clipboard=unnamedplus                           " Use system clipboard
 
