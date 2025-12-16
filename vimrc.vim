@@ -50,17 +50,9 @@ let &t_te.="\e[0 q"
 
 set runtimepath+=~/awagner1/.vim
 
-
 " =========================
-" FILE TYPE APPLICATIONS
+" FILE TYPE SETTINGS AND SYNTAX
 " =========================
-
-let g:netrw_preview   = 1
-let g:netrw_liststyle = 0
-let g:netrw_winsize   = 30
-let g:netrw_keepdir   = 0
-
-let g:netrw_browsex_viewer = 'terminal'
 
 filetype on                                         " Enable type file detection.
 filetype plugin on                                  " Enable plugins and load plugin for the detected file type.
@@ -70,11 +62,28 @@ filetype plugin indent on
 " Syntax and colors
 syntax on                                           " Set syntax on and color scheme
 execute 'colorscheme ' . g:color_scheme            |" Set color scheme based on ~/.vimrc setting
-" Set vim syntax highlighting for each vim file
-autocmd BufRead,BufNewFile .vim* set filetype=vim
 
-autocmd FileType c      setlocal commentstring=//\ %s
+" Set vim syntax highlighting for each vim file
+autocmd BufRead,BufNewFile  access*         set filetype=access_log
+autocmd BufRead,BufNewFile  platform*       set filetype=platform_log
+autocmd BufRead,BufNewFile  *.vim           set filetype=vim
+
+execute     'autocmd FileType   access_log  source ' . g:vim_rc_dir . '/access_log.vim'
+
 autocmd VimEnter * if &filetype == 'sql' | setlocal commentstring=--\ %s | endif
+
+
+" =========================
+" NETRW SETTINGS
+" =========================
+
+let g:netrw_preview   = 1
+let g:netrw_liststyle = 0
+let g:netrw_winsize   = 30
+let g:netrw_keepdir   = 0
+
+let g:netrw_browsex_viewer = 'terminal'
+
 
 " =========================
 " INDENTATION AND TABS | DISPLAY SETTINGS
