@@ -111,7 +111,7 @@ highlight ColorColumn term=bold cterm=bold ctermbg=1
 " FILE MANAGEMENT
 " =========================
 
-set viminfo='50,n~/awagner1/.viminfo                " Set my personal .viminfo file
+" set viminfo='50,n~/awagner1/.viminfo   "unset; behaviour is inconsistent             " Set my personal .viminfo file
 set undofile                                        " Enable persistent undo
 set undodir=~/awagner1/.vim/undodir                 " Set undo directory location
 
