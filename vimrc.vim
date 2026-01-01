@@ -42,12 +42,6 @@ nnoremap    -q              :q<CR>                                      " Close 
 
 nnoremap <expr> <Enter> (&buftype ==# '') ? 'o<ESC>' : '<Enter>'|       " Add new line by {Enter}; except in special buffers
 
-" set the cursor shape
-let &t_ti.="\e[1 q"
-let &t_si.="\e[5 q"
-let &t_ei.="\e[1 q"
-let &t_te.="\e[0 q"
-
 set runtimepath+=~/awagner1/.vim
 
 " =========================
@@ -70,7 +64,8 @@ autocmd BufRead,BufNewFile  *.vim           set filetype=vim
 
 execute     'autocmd FileType   access_log  source ' . g:vim_rc_dir . '/access_log.vim'
 
-autocmd VimEnter * if &filetype == 'sql' | setlocal commentstring=--\ %s | endif
+autocmd VimEnter,BufNewFile,BufRead * if &filetype == 'sql' | setlocal commentstring=--\ %s | endif
+autocmd VimEnter,BufNewFile,BufRead * if &filetype == 'c'   | setlocal commentstring=//\ %s | endif
 
 
 " =========================

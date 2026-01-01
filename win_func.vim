@@ -10,6 +10,13 @@ nnoremap    Y               "+Y
 vnoremap    y               "+y
 
 
+" Set the cursor shape
+let &t_ti.="\e[1 q"
+let &t_si.="\e[5 q"
+let &t_ei.="\e[1 q"
+let &t_te.="\e[0 q"
+
+
 " =========================
 " AUTOCOMMANDS AND FUNCTIONS
 " =========================
