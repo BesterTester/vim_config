@@ -34,7 +34,7 @@ nnoremap    #               #``
 
 execute     'nnoremap       ;r       :source ' . g:vim_rc_file|         " Quick saving and loading of config files
 
-tnoremap    -e              <C-\><C-n>                                  " Exit terminal mode keep tab open
+tnoremap    -e              <C-\><C-n><C-w>w                            " Exit terminal mode keep tab open and switch to other window
 tnoremap    -q              <C-\><C-n>:q!<CR>                           " Exit terminal mode and close terminal
 nnoremap    -vv             :rightbelow vertical terminal<CR>|          " Open vertical terminal
 nnoremap    -w              <C-w><C-w>                                  " Circle window
@@ -101,6 +101,7 @@ set cursorline
 highlight CursorLine term=standout cterm=bold ctermbg=0
 highlight ColorColumn term=bold cterm=bold ctermbg=1
 
+set title
 
 " =========================
 " FILE MANAGEMENT
