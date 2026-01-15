@@ -196,7 +196,10 @@ function! ExtractCurrentSQL()
 
   " Add each line of the SQL statement
   for line in sql_statement
-    call add(output_content, line)
+    " Skip lines that are SQL comments (start with --)
+    if line !~ '^\s*--'
+      call add(output_content, line)
+    endif
   endfor
 
   call add(output_content, '')                  " Add blank line for separation
