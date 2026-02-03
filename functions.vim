@@ -141,7 +141,8 @@ function! SendBufferViaEmail()
     let l:email_address = 'andy.wagner3@vodafone.com'
   endif
   let g:buffer_file_name = expand("%:p")
-  let cmd = 'echo " " | /usr/bin/mail -s "SQL Buffer File" -a ' . g:buffer_file_name .  " " . l:email_address
+  let cmd = 'echo " " | /usr/bin/mail -s "SQL Buffer File" -a ' . g:buffer_file_name .  " -r vf-de.ulm.operations@vodafone.com " . l:email_address
+
   let output = system(cmd)
   echo "Sent email. Result: " . output
 endfunction
