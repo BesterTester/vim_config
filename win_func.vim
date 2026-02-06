@@ -25,6 +25,8 @@ let &t_te.="\e[0 q"
 autocmd VimLeave * call ExitVim()
 
 nnoremap    ;e              :call ExitVim()<CR>                         " Save all buffers befor exiting vim
+nnoremap    ;f              :let @f=expand('%:p')                       " Save buffer path to f register
+
 
 
 " =========================
