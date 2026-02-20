@@ -39,11 +39,20 @@ nnoremap    ;i                      :call InsertDate()<CR>
  " ToggleLineNumbers()
  " TogglePaste()
  " ToggleWrap()
+ " DoRetab()
  
 
 " =========================
 " AUTOCOMMANDS AND FUNCTIONS
 " =========================
+
+function! DoRetab()
+  set noexpandtab
+  retab!
+  set expandtab
+  retab!
+endfunction
+
 
 function! AlignByDelimiter()
 " Align a block of text by a given delimiter; '=' is default
