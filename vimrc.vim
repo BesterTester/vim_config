@@ -144,9 +144,9 @@ set statusline+=\%{(mode()=='c')?'\COMMAND\ ':''}
 set statusline+=\%{(mode()=='t')?'\TERMINAL\ ':''}
 set statusline+=\%{mode()} " only to find the return values of mode()
 set statusline+=%#TabLineFill#\ \|FILE:\ 
-set statusline+=%#ErrorMsg#\%{hostname()}
-set statusline+=%#TabLineFill#\:
-set statusline+=\%F
+set statusline+=%#StatusLineTerm#\%{hostname()}
+set statusline+=:\%F
+set statusline+=%#TabLineFill#\ 
 set statusline+=%m
 set statusline+=%=
 set statusline+=\ %y
