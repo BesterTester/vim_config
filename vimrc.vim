@@ -143,12 +143,14 @@ set statusline+=\%{(mode()=='Rv')?'\V-REPLACE\ ':''}
 set statusline+=\%{(mode()=='c')?'\COMMAND\ ':''}
 set statusline+=\%{(mode()=='t')?'\TERMINAL\ ':''}
 set statusline+=\%{mode()} " only to find the return values of mode()
-set statusline+=%#TabLineFill#\ \|FILE:\ 
+set statusline+=%#TabLineFill#\ \|FILE:\
 set statusline+=%#StatusLineTerm#\%{hostname()}
 set statusline+=:\%F
-set statusline+=%#TabLineFill#\ 
+set statusline+=%#TabLineFill#\
 set statusline+=%m
 set statusline+=%=
+set statusline+=%#WarningMsg#%{&paste?'PASTE':''}
+set statusline+=%#TabLineFill#
 set statusline+=\ %y
 set statusline+=%#WarningMsg#%{&paste?'PASTE':''}
 set statusline+=%#TabLineFill#
