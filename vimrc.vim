@@ -103,6 +103,8 @@ highlight ColorColumn term=bold cterm=bold ctermbg=1
 
 set title
 
+set scrolloff=0
+
 " =========================
 " FILE MANAGEMENT
 " =========================
