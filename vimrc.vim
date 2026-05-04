@@ -39,6 +39,7 @@ tnoremap    -q              <C-\><C-n>:q!<CR>                           " Exit t
 nnoremap    -vv             :rightbelow vertical terminal<CR>|          " Open vertical terminal
 nnoremap    -w              <C-w><C-w>                                  " Circle window
 nnoremap    -q              :q<CR>                                      " Close window
+nnoremap    -nn             :let @* = expand("%")                       " Yank current file name into clipbard
 
 nnoremap <expr> <Enter> (&buftype ==# '') ? 'o<ESC>' : '<Enter>'|       " Add new line by {Enter}; except in special buffers
 
