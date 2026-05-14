@@ -25,7 +25,6 @@ nnoremap    <TAB>           gt                                          " Circle
 nnoremap    <S-TAB>         gT
 
 " Autcompletion short cuts
-inoremap    {               {<CR>}<Esc>ko|                              " Create a paragraph
 " Escape by jj
 inoremap    jj              <Esc>
 " Do not jump after highlight search
