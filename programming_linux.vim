@@ -5,21 +5,22 @@
 " Programming specific mappings
 nnoremap -b :call CompileAndRunVSplit()<CR>
 nnoremap -r :call RerunInVSplit()<CR>
+nnoremap -P :call OpenPDF()<CR>
 
 
 " =========================
 " PLUGIN CONFIGURATION    
 " =========================
 
-call plug#begin('~/.vim/plugged')
+" call plug#begin('~/.vim/plugged')
 
 " Vlime - Common Lisp development environment
-Plug 'vlime/vlime', {'rtp': 'vim/'}
+" Plug 'vlime/vlime', {'rtp': 'vim/'}
 
 " Paredit - structured editing for Lisp
-Plug 'kovisoft/paredit'
+" Plug 'kovisoft/paredit'
 
-call plug#end()
+" call plug#end()
 
 
 " =========================
@@ -28,6 +29,7 @@ call plug#end()
 
  " CompileAndRunVSplit()
  " RerunInVSplit()
+ " OpenPDF()
 
 
 " =========================
@@ -36,8 +38,16 @@ call plug#end()
 
 let g:out_esc       = ''
 
+function! OpenPDF()
+    let l:pdf = expand('%:p:r') . '.pdf'
+    execute 'silent !cmd /c start "" "' . shellescape(l:pdf) '"'
+" :!cmd /c start "" C:\Users\Andy.Wagner3\Hagen\Test_template.pdf
+endfunction
+
+
 function! CompileAndRunVSplit()
     update
+
     let l:src = expand('%:p')
     let l:src_esc = shellescape(l:src)
     let l:filetype = &filetype
@@ -55,6 +65,10 @@ function! CompileAndRunVSplit()
         let g:last_filetype = 'interpreted'
         let l:cmd = 'bash -lc "/usr/bin/sbcl --script ' . l:src_esc . '"'
         
+    elseif l:filetype ==# 'tex'
+        " LaTeX file compilation and open PDF
+        let l:cmd = "C:\\Users\\Andy.Wagner3\\AppData\\Local\\Programs\\MiKTeX\\miktex\\bin\\x64\\pdflatex.exe " . shellescape(l:src)
+		" let l:cmd = "C:\\Users\\Andy.Wagner3\\AppData\\Local\\Programs\\MiKTeX\\miktex\\bin\\x64\\pdflatex " . shellescape(l:src) . " && start \"\" " . shellescape(expand('%:p:r') . '.pdf')
     else
         echo "Unsupported file type: " . l:filetype
         return
@@ -62,6 +76,7 @@ function! CompileAndRunVSplit()
     
     execute 'vertical rightbelow terminal ' . l:cmd
 endfunction
+
 
 function! RerunInVSplit()
     if !exists('g:last_filetype')
