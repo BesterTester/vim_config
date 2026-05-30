@@ -118,6 +118,9 @@ execute 'set viminfofile=' . g:vim_info_file       |" Set the viminfo for me
 set undofile                                        " Enable persistent undo
 set undodir=~/awagner1/.vim/undodir                 " Set undo directory location
 
+set autoread                                        " Auto-reload files changed outside vim
+au FocusGained,BufEnter * checktime                 " Trigger check on focus/buffer switch
+
 " FINDING FILES
 set path+=**                                        " Search recursively in subdirectories
 set wildmenu                                        " Enhanced command-line completion

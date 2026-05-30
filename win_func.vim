@@ -37,6 +37,13 @@ nnoremap    ;f              :let @f=expand('%:p')                       " Save b
   " ActivateNetrwTab()
 
 
+" =========================
+" NETRW
+" =========================
+
+" Das verhindert, dass leere/unbenannte Buffer überhaupt in der Session landen – als zweite Absicherung.
+set sessionoptions-=blank
+
 function! ExitVim()
 " Function to save all unsaved files for recovery in the next session
 " and exit vim
@@ -78,6 +85,13 @@ function! ExitVim()
   " Return to original tab
   execute 'tabnext' l:current_tab
   echom l:saved . ' buffers saved.'
+
+ " Close all netrw/directory buffers before saving session
+  for buf in range(1, bufnr('$'))
+    if getbufvar(buf, '&filetype') ==# 'netrw' || isdirectory(bufname(buf))
+      execute 'bwipeout ' . buf
+    endif
+  endfor
 
   " Save the session with all files
   execute 'mks! ~/_vim_latest_session'
