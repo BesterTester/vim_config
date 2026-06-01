@@ -21,8 +21,10 @@ let &t_te.="\e[0 q"
 " AUTOCOMMANDS AND FUNCTIONS
 " =========================
 
-" Autocommand to call the SaveSession function on Vim exit
-autocmd VimLeave * call ExitVim()
+augroup MyWinAutocommands
+    autocmd!
+    autocmd VimLeave * call ExitVim()
+augroup END
 
 nnoremap    ;e              :call ExitVim()<CR>                         " Save all buffers befor exiting vim
 nnoremap    ;f              :let @f=expand('%:p')                       " Save buffer path to f register

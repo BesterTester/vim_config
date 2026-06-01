@@ -10,6 +10,10 @@ let mapleader = ','             " Remap the Leader to comma
 " Command to list all functions defined in *.vim files under g:vim_rc_dir
 command! ListMyFuncs execute 'vimgrep /^function/ ' . g:vim_rc_dir . '/*.vim' | copen
 
+set hidden	                     " Switch buffers without forced save — fits your tab workflow
+set ttimeoutlen=50	             " Faster Escape response in terminal
+
+
 " =========================
 " KEYBOARD MAPPING
 " =========================
@@ -52,24 +56,25 @@ set runtimepath+=~/awagner1/.vim
 " FILE TYPE SETTINGS AND SYNTAX
 " =========================
 
-filetype on                                         " Enable type file detection.
-filetype plugin on                                  " Enable plugins and load plugin for the detected file type.
-filetype indent on                                  " Load an indent file for the detected file type.
+" filetype on                                         " Enable type file detection.
+" filetype plugin on                                  " Enable plugins and load plugin for the detected file type.
+" filetype indent on                                  " Load an indent file for the detected file type.
 filetype plugin indent on
 
 " Syntax and colors
 syntax on                                           " Set syntax on and color scheme
 execute 'colorscheme ' . g:color_scheme            |" Set color scheme based on ~/.vimrc setting
 
-" Set vim syntax highlighting for each vim file
-autocmd BufRead,BufNewFile  access*         set filetype=access_log
-autocmd BufRead,BufNewFile  platform*       set filetype=platform_log
-autocmd BufRead,BufNewFile  *.vim           set filetype=vim
-
-execute     'autocmd FileType   access_log  source ' . g:vim_rc_dir . '/access_log.vim'
-
-autocmd VimEnter,BufNewFile,BufRead * if &filetype == 'sql' | setlocal commentstring=--\ %s | endif
-autocmd VimEnter,BufNewFile,BufRead * if &filetype == 'c'   | setlocal commentstring=//\ %s | endif
+augroup MyAutocommands
+    autocmd!
+    execute 'autocmd FileType   access_log  source ' . g:vim_rc_dir . '/access_log.vim'
+    autocmd BufRead,BufNewFile  access*         set filetype=access_log
+    autocmd BufRead,BufNewFile  platform*       set filetype=platform_log
+    autocmd BufRead,BufNewFile  *.vim           set filetype=vim
+    autocmd VimEnter,BufNewFile,BufRead * if &filetype == 'sql' | setlocal commentstring=--\ %s | endif
+    autocmd VimEnter,BufNewFile,BufRead * if &filetype == 'c'   | setlocal commentstring=//\ %s | endif
+    autocmd FocusGained,BufEnter * checktime
+augroup END
 
 
 " =========================
@@ -115,11 +120,11 @@ set scrolloff=0
 
 " set viminfo='50,n~/awagner1/.viminfo   "unset; behaviour is inconsistent             " Set my personal .viminfo file
 execute 'set viminfofile=' . g:vim_info_file       |" Set the viminfo for me
+set viminfo='50,<50,:100,/100,s10,h                |" Override system viminfo settings
 set undofile                                        " Enable persistent undo
 set undodir=~/awagner1/.vim/undodir                 " Set undo directory location
 
 set autoread                                        " Auto-reload files changed outside vim
-au FocusGained,BufEnter * checktime                 " Trigger check on focus/buffer switch
 
 " FINDING FILES
 set path+=**                                        " Search recursively in subdirectories
