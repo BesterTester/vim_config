@@ -16,3 +16,6 @@
 # OS files
 .DS_Store
 Thumbs.db
+
+# Text files to feed to the agents
+*.txt
