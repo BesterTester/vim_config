@@ -245,9 +245,11 @@ function! ExecuteBashCommandBuffer(bash_file)
   " Use the currently modified sql_buffer.sql file to execute the SQL
   execute 'update'
 
-  if expand('%:p') !=# fnamemodify(g:sql_buffer, ':p')
+  if resolve(expand('%:p')) !=# resolve(g:sql_buffer)
     echohl WarningMsg
     echo "WARNING: Current buffer is not the sql_buffer. Aborting execution."
+    echo expand('%:p')
+    echo resolve(g:sql_buffer)
     echohl None
     return
   endif
