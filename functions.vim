@@ -203,7 +203,7 @@ function! FilterLinesByPattern(...) abort
 " Delete matching lines in the whole file.
 " Supports Visual-mode pattern and optional 'not' parameter to invert the match.
   " Determine if we were invoked from Visual mode and if 'not' was requested.
-  let l:is_visual = (a:0 >= 1 && a:1 !=# '')
+  let l:is_visual = (a:0 >= 1 && a:1 !=# '' && a:1 !=# 'not')
   " Allow passing only 'not' (Normal mode), or as the second arg when Visual
   let l:not = (a:0 >= 2 && a:2 ==# 'not') || (a:0 == 1 && a:1 ==# 'not')
 
@@ -211,11 +211,11 @@ function! FilterLinesByPattern(...) abort
     " Save and yank current visual selection into register z
     let l:save_reg = @"
     normal! gv"zy
-    let l:pattern = '\V' . escape(@z, '\')
+    let l:pattern = '\V' . escape(@z, '\/')
     let @" = l:save_reg
   else
     " Normal mode: use unnamed register as the literal pattern
-    let l:pattern = '\V' . escape(getreg('"'), '\')
+    let l:pattern = '\V' . escape(getreg('"'), '\/')
   endif
 
   " Build the global command, invert with g! if 'not' is set
