@@ -12,7 +12,7 @@ nnoremap -P :call OpenPDF()<CR>
 " PLUGIN CONFIGURATION    
 " =========================
 
-" call plug#begin('~/.vim/plugged')
+call plug#begin('~/repositories/plugged')
 
 " Vlime - Common Lisp development environment
 " Plug 'vlime/vlime', {'rtp': 'vim/'}
@@ -20,7 +20,19 @@ nnoremap -P :call OpenPDF()<CR>
 " Paredit - structured editing for Lisp
 " Plug 'kovisoft/paredit'
 
-" call plug#end()
+" https://github.com/lervag/vimtex
+  Plug 'lervag/vimtex'
+
+call plug#end()
+
+
+" =========================
+" VimTeX CONFIG
+" =========================
+
+let g:vimtex_compiler_method = 'latexmk'
+let g:vimtex_view_method = 'general'
+let g:vimtex_view_general_viewer = 'C:\Users\Andy.Wagner3\repositories\SumatraPDF-3.6.1-64\SumatraPDF-3.6.1-64.exe'
 
 
 " =========================

@@ -161,7 +161,6 @@ set statusline+=%=
 set statusline+=%#WarningMsg#%{&paste?'PASTE':''}
 set statusline+=%#TabLineFill#
 set statusline+=\ %y
-set statusline+=%#WarningMsg#%{&paste?'PASTE':''}
 set statusline+=%#TabLineFill#
 set statusline+=\ %{&fileencoding?&fileencoding:&encoding}
 set statusline+=\ [%{&fileformat}\]
