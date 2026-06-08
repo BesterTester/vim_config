@@ -12,6 +12,12 @@ nnoremap -P :call OpenPDF()<CR>
 " PLUGIN CONFIGURATION    
 " =========================
 
+
+
+" =========================
+" PLUGIN CONFIGURATION    
+" =========================
+
 call plug#begin('~/repositories/plugged')
 
 " Vlime - Common Lisp development environment
@@ -32,7 +38,9 @@ call plug#end()
 
 let g:vimtex_compiler_method = 'latexmk'
 let g:vimtex_view_method = 'general'
-let g:vimtex_view_general_viewer = 'C:\Users\Andy.Wagner3\repositories\SumatraPDF-3.6.1-64\SumatraPDF-3.6.1-64.exe'
+let g:vimtex_view_general_viewer = 'C:\Users\Andy.Wagner3\Software\SumatraPDF-3.6.1-64\SumatraPDF-3.6.1-64.exe'
+let g:vimtex_view_general_options = '-reuse-instance -forward-search @tex @line @pdf'
+let g:vimtex_view_general_options_latexmk = '-reuse-instance'
 
 
 " =========================
@@ -53,7 +61,6 @@ let g:out_esc       = ''
 function! OpenPDF()
     let l:pdf = expand('%:p:r') . '.pdf'
     execute 'silent !cmd /c start "" "' . shellescape(l:pdf) '"'
-" :!cmd /c start "" C:\Users\Andy.Wagner3\Hagen\Test_template.pdf
 endfunction
 
 
@@ -80,7 +87,6 @@ function! CompileAndRunVSplit()
     elseif l:filetype ==# 'tex'
         " LaTeX file compilation and open PDF
         let l:cmd = "C:\\Users\\Andy.Wagner3\\AppData\\Local\\Programs\\MiKTeX\\miktex\\bin\\x64\\pdflatex.exe " . shellescape(l:src)
-		" let l:cmd = "C:\\Users\\Andy.Wagner3\\AppData\\Local\\Programs\\MiKTeX\\miktex\\bin\\x64\\pdflatex " . shellescape(l:src) . " && start \"\" " . shellescape(expand('%:p:r') . '.pdf')
     else
         echo "Unsupported file type: " . l:filetype
         return
