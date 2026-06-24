@@ -25,8 +25,8 @@ noremap     ä               <C-]>                                       " Setti
 " Remap visual block mode to not interfere with windows paste
 nnoremap    vv              <C-v>|
 
-nnoremap    <TAB>           gt                                          " Circle through tabs; TODO: can this bestricted to netrw?
-nnoremap    <S-TAB>         gT
+nnoremap    <TAB>           gt|                                         " Circle through tabs; TODO: can this bestricted to netrw?
+nnoremap    <S-TAB>         gT|
 
 " Autcompletion short cuts
 " Escape by jj
