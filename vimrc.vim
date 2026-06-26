@@ -13,6 +13,8 @@ command! ListMyFuncs execute 'vimgrep /^function/ ' . g:vim_rc_dir . '/*.vim' | 
 set hidden	                     " Switch buffers without forced save — fits your tab workflow
 set ttimeoutlen=50	             " Faster Escape response in terminal
 
+set nostartofline                " keep the cursor at line end when paging up
+
 
 " =========================
 " KEYBOARD MAPPING
