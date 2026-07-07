@@ -102,7 +102,7 @@ endfunction
 
 
 function! ExtractCurrentSQL_2()
-  " Generate timestamp filename in format "output_yyyy-mm-dd_HHMMSS.out"
+  " Generate timestamp filename in format "output_yyyy-mm-dd_HHMMSS.txt"
   let g:timestamp = strftime("%Y-%m-%d_%H%M%S")
   let g:input_filename = g:output_dir . g:timestamp . "_input.sql"
 
@@ -167,9 +167,9 @@ endfunction
 
 
 function! ExtractCurrentSQL()
-" Generate timestamp filename in format "output_yyyy-mm-dd_HHMMSS.out"
+" Generate timestamp filename in format "output_yyyy-mm-dd_HHMMSS.txt"
   let g:timestamp = strftime("%Y-%m-%d_%H%M%S")
-  let g:spool_filename = "/WEB_DATA/tmp_spool/output_" . g:timestamp . ".out"
+  let g:spool_filename = "/WEB_DATA/tmp_spool/output_" . g:timestamp . ".txt"
   " Find the start of the current SQL statement (go up until a semicolon or beginning of file)
   let start_line = line('.')
   while start_line > 1 && getline(start_line-1) !~ ';$'
