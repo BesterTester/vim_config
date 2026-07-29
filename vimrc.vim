@@ -75,8 +75,11 @@ augroup MyAutocommands
     autocmd BufRead,BufNewFile  *.vim           set filetype=vim
     autocmd VimEnter,BufNewFile,BufRead * if &filetype == 'sql' | setlocal commentstring=--\ %s | endif
     autocmd VimEnter,BufNewFile,BufRead * if &filetype == 'c'   | setlocal commentstring=//\ %s | endif
-    autocmd FocusGained,BufEnter * checktime
 augroup END
+
+autocmd BufEnter * if empty(getcmdwintype())
+      \ | checktime
+      \ | endif
 
 
 " =========================
@@ -107,6 +110,7 @@ set matchpairs+=<:>                                 " Add < > to matching pairs
 set wildmode=longest,list                           " List all matches without completing, then each full match
 set number                                          " Show line numbers
 set clipboard=unnamedplus                           " Use system clipboard
+set timeoutlen=300                                  " Set the timeout for waiting for second keys
 
 set cursorline
 highlight CursorLine term=standout cterm=bold ctermbg=0

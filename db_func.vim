@@ -2,6 +2,7 @@
 " KEY TO FUNCTION MAPPINGS
 " =========================
 
+nnoremap <leader>k  :call AddWordMatch()<CR>
 nnoremap <leader>d  :call ConvertFromEpoc()<CR>
 nnoremap <Leader>e  :call ConvertToEpoc()<CR>
 nnoremap <Leader>c  :call ExtractCurrentSQL()<CR>
@@ -15,6 +16,7 @@ nnoremap <Leader>s  :call SendBufferToFifo()<CR>
 " FUNCTION LIST    
 " =========================
 
+ " AddWordMatch()
  " ConvertBufferToCSV()
  " ConvertFromEpoc()
  " ConvertToEpoc()
@@ -31,7 +33,7 @@ nnoremap <Leader>s  :call SendBufferToFifo()<CR>
  "
 
 " =========================
-" SQL BUFFER FUNCTIONS
+" SQL BUFFER CONSTANTS
 " =========================
 
 let g:manager_name  = 'pers_conn_manager'
@@ -41,6 +43,39 @@ let g:output_dir    = g:script_dir . 'sql_output/'
 let g:input_fifo    = g:script_dir . 'input.fifo'
 let g:sql_buffer    = g:script_dir . 'sql_buffer.sql'
 let g:input_filename = ""
+
+
+let g:match_groups = [
+      \ 'MyMatch1',
+      \ 'MyMatch2',
+      \ 'MyMatch3',
+      \ 'MyMatch4',
+      \ 'MyMatch5'
+      \ ]
+
+let g:match_index = 0
+highlight MyMatch1 ctermbg=DarkRed      guibg=DarkRed
+highlight MyMatch2 ctermbg=DarkBlue     guibg=DarkBlue
+highlight MyMatch3 ctermbg=DarkGreen    guibg=DarkGreen
+highlight MyMatch4 ctermbg=DarkMagenta  guibg=DarkMagenta
+highlight MyMatch5 ctermbg=DarkCyan     guibg=DarkCyan
+
+
+
+" =========================
+" SQL BUFFER FUNCTIONS
+" =========================
+
+" Color highlight strings
+" :echo getmatches()  :call clearmatches()
+function! AddWordMatch()
+    let l:word = expand('<cWORD>')
+    let l:group = g:match_groups[
+          \ g:match_index % len(g:match_groups)
+          \ ]
+    call matchadd(l:group, '\V\<'.l:word.'\>')
+    let g:match_index += 1
+endfunction
 
 
 " Start/Stop Database connection
