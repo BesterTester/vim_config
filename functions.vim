@@ -2,6 +2,7 @@
 " KEY TO FUNCTION MAPPINGS
 " =========================
 "
+nnoremap    <leader>k               :call AddWordMatch()<CR>
 nnoremap    <Leader>m               :call SendBufferViaEmail()<CR>
 nnoremap    <Leader>n               :call RenameFileInTab()<CR>
 nnoremap    -c                      :call ToggleComment()<CR>
@@ -24,6 +25,7 @@ nnoremap    ;i                      :call InsertDate()<CR>
 " FUNCTION LIST    
 " =========================
 
+ " AddWordMatch()
  " SendBufferViaEmail()
  " RenameFileInTab()
 
@@ -41,10 +43,40 @@ nnoremap    ;i                      :call InsertDate()<CR>
  " ToggleWrap()
  " DoRetab()
  
+" =========================
+" SQL BUFFER CONSTANTS
+" =========================
+
+let g:match_groups = [
+      \ 'MyMatch1',
+      \ 'MyMatch2',
+      \ 'MyMatch3',
+      \ 'MyMatch4',
+      \ 'MyMatch5'
+      \ ]
+
+let g:match_index = 0
+highlight MyMatch1 ctermbg=DarkRed      guibg=DarkRed
+highlight MyMatch2 ctermbg=DarkBlue     guibg=DarkBlue
+highlight MyMatch3 ctermbg=DarkGreen    guibg=DarkGreen
+highlight MyMatch4 ctermbg=DarkMagenta  guibg=DarkMagenta
+highlight MyMatch5 ctermbg=DarkCyan     guibg=DarkCyan
 
 " =========================
 " AUTOCOMMANDS AND FUNCTIONS
 " =========================
+
+" Color highlight strings
+" :echo getmatches()  :call clearmatches()
+function! AddWordMatch()
+    let l:word = expand('<cWORD>')
+    let l:group = g:match_groups[
+          \ g:match_index % len(g:match_groups)
+          \ ]
+    call matchadd(l:group, '\V\<'.l:word.'\>')
+    let g:match_index += 1
+endfunction
+
 
 function! DoRetab()
   set noexpandtab
