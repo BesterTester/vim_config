@@ -81,6 +81,10 @@ autocmd BufEnter * if empty(getcmdwintype())
       \ | checktime
       \ | endif
 
+augroup GlobalMatches
+    autocmd!
+    autocmd WinEnter * call RestoreMatches()
+augroup END
 
 " =========================
 " NETRW SETTINGS

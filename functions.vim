@@ -57,6 +57,7 @@ let g:match_groups = [
       \ ]
 
 let g:match_index = 0
+let g:global_matches = []
 highlight MyMatch1 ctermbg=DarkRed      guibg=DarkRed
 highlight MyMatch2 ctermbg=DarkBlue     guibg=DarkBlue
 highlight MyMatch3 ctermbg=DarkGreen    guibg=DarkGreen
@@ -69,12 +70,28 @@ highlight MyMatch5 ctermbg=DarkCyan     guibg=DarkCyan
 
 " Color highlight strings
 " :echo getmatches()  :call clearmatches()
+function! RestoreMatches()
+    call clearmatches()
+
+    for l:m in g:global_matches
+        call matchadd(
+              \ l:m.group,
+              \ '\V' . escape(l:m.pattern, '\')
+              \ )
+    endfor
+endfunction
+
+
 function! AddVisualMatch()
     let l:text = getline("'<")[col("'<")-1 : col("'>")-1]
 
     let l:group = g:match_groups[
           \ g:match_index % len(g:match_groups)
           \ ]
+    call add(g:global_matches, {
+          \ 'group': l:group,
+          \ 'pattern': l:text
+          \ })
     call matchadd(l:group, '\V' . escape(l:text, '\'))
     let g:match_index += 1
 endfunction
@@ -86,6 +103,10 @@ function! AddWordMatch()
     let l:group = g:match_groups[
           \ g:match_index % len(g:match_groups)
           \ ]
+    call add(g:global_matches, {
+          \ 'group': l:group,
+          \ 'pattern': l:text
+          \ })
     call matchadd(l:group, '\V' . escape(l:text, '\'))
     let g:match_index += 1
 endfunction
