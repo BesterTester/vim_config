@@ -2,6 +2,7 @@
 " KEY TO FUNCTION MAPPINGS
 " =========================
 "
+xnoremap    <leader>k               :call AddVisualMatch()<CR>
 nnoremap    <leader>k               :call AddWordMatch()<CR>
 nnoremap    <Leader>m               :call SendBufferViaEmail()<CR>
 nnoremap    <Leader>n               :call RenameFileInTab()<CR>
@@ -68,12 +69,24 @@ highlight MyMatch5 ctermbg=DarkCyan     guibg=DarkCyan
 
 " Color highlight strings
 " :echo getmatches()  :call clearmatches()
-function! AddWordMatch()
-    let l:word = expand('<cWORD>')
+function! AddVisualMatch()
+    let l:text = getline("'<")[col("'<")-1 : col("'>")-1]
+
     let l:group = g:match_groups[
           \ g:match_index % len(g:match_groups)
           \ ]
-    call matchadd(l:group, '\V\<'.l:word.'\>')
+    call matchadd(l:group, '\V' . escape(l:text, '\'))
+    let g:match_index += 1
+endfunction
+
+
+function! AddWordMatch()
+    " Wort unter dem Cursor verwenden
+    let l:text = expand('<cWORD>')
+    let l:group = g:match_groups[
+          \ g:match_index % len(g:match_groups)
+          \ ]
+    call matchadd(l:group, '\V' . escape(l:text, '\'))
     let g:match_index += 1
 endfunction
 
