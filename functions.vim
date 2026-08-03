@@ -2,8 +2,8 @@
 " KEY TO FUNCTION MAPPINGS
 " =========================
 "
-xnoremap    <leader>k               :call AddVisualMatch()<CR>
-nnoremap    <leader>k               :call AddWordMatch()<CR>
+xnoremap    -k                      :call AddVisualMatch()<CR>
+nnoremap    -k                      :call AddWordMatch()<CR>
 nnoremap    <Leader>m               :call SendBufferViaEmail()<CR>
 nnoremap    <Leader>n               :call RenameFileInTab()<CR>
 nnoremap    -c                      :call ToggleComment()<CR>

@@ -2,7 +2,7 @@
 " KEY TO FUNCTION MAPPINGS
 " =========================
 
-nnoremap <leader>d  :call ConvertFromEpoc()<CR>
+nnoremap <Leader>d  :call ConvertFromEpoc()<CR>
 nnoremap <Leader>e  :call ConvertToEpoc()<CR>
 nnoremap <Leader>c  :call ExtractCurrentSQL()<CR>
 nnoremap <Leader>b  :call ExecuteBashCommandBuffer('OCI_prod_ULM_access.sh')<CR>
