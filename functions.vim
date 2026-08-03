@@ -1,7 +1,8 @@
 " =========================
 " KEY TO FUNCTION MAPPINGS
 " =========================
-"
+
+nnoremap    -kk                     :call ClearMatchesAndSearch()<CR>
 xnoremap    -k                      :call AddVisualMatch()<CR>
 nnoremap    -k                      :call AddWordMatch()<CR>
 nnoremap    <Leader>m               :call SendBufferViaEmail()<CR>
@@ -27,6 +28,7 @@ nnoremap    ;i                      :call InsertDate()<CR>
 " =========================
 
  " AddWordMatch()
+ " ClearMatchesAndSearch()
  " SendBufferViaEmail()
  " RenameFileInTab()
 
@@ -67,6 +69,22 @@ highlight MyMatch5 ctermbg=DarkCyan     guibg=DarkCyan
 " =========================
 " AUTOCOMMANDS AND FUNCTIONS
 " =========================
+
+function! ClearMatchesAndSearch()
+    call clearmatches()
+    set nohlsearch
+    let g:global_matches = []
+    let g:match_index = 0
+    " Prompt for search pattern
+    let l:pattern = input("Enter search pattern: ")
+    if !empty(l:pattern)
+    " Store new pattern in search register and force highlight on.
+    let @/ = l:pattern
+    set hlsearch
+    call search(l:pattern, 'W')
+    endif
+endfunction
+
 
 " Color highlight strings
 " :echo getmatches()  :call clearmatches()

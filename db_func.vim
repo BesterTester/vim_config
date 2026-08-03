@@ -6,7 +6,7 @@ nnoremap <Leader>d  :call ConvertFromEpoc()<CR>
 nnoremap <Leader>e  :call ConvertToEpoc()<CR>
 nnoremap <Leader>c  :call ExtractCurrentSQL()<CR>
 nnoremap <Leader>b  :call ExecuteBashCommandBuffer('OCI_prod_ULM_access.sh')<CR>
-nnoremap <Leader>B  :call ExecuteBashCommandBuffer('OCI_prod_Event_access.sh')<CR>
+nnoremap <Leader>bb :call ExecuteBashCommandBuffer('OCI_prod_Event_access.sh')<CR>
 nnoremap <Leader>t  :call OpenSqlBufferInTab()<CR>
 
 nnoremap <Leader>s  :call SendBufferToFifo()<CR>

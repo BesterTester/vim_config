@@ -33,6 +33,8 @@ nnoremap    <S-TAB>         gT|
 " Autcompletion short cuts
 " Escape by jj
 inoremap    jj              <Esc>
+noremap     qq              q:
+noremap     qs              q/
 " Do not jump after highlight search
 nnoremap    *               *``
 nnoremap    #               #``
@@ -114,7 +116,7 @@ set matchpairs+=<:>                                 " Add < > to matching pairs
 set wildmode=longest,list                           " List all matches without completing, then each full match
 set number                                          " Show line numbers
 set clipboard=unnamedplus                           " Use system clipboard
-set timeoutlen=300                                  " Set the timeout for waiting for second keys
+set timeoutlen=500                                  " Slightly longer timeout improves shifted leader combos like ,B
 
 set cursorline
 highlight CursorLine term=standout cterm=bold ctermbg=0
