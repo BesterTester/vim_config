@@ -43,7 +43,8 @@ execute     'nnoremap       ;r       :source ' . g:vim_rc_file|         " Quick 
 
 tnoremap    -e              <C-\><C-n><C-w>w                            " Exit terminal mode keep tab open and switch to other window
 tnoremap    -q              <C-\><C-n>:q!<CR>                           " Exit terminal mode and close terminal
-nnoremap    -vv             :rightbelow vertical terminal<CR>|          " Open vertical terminal
+nnoremap    -vv             :tab terminal<CR>|                          " Open vertical terminal
+nnoremap    -T              :tabnew<CR>|                                " Open new Tab
 nnoremap    -w              <C-w><C-w>                                  " Circle window
 nnoremap    -q              :q<CR>                                      " Close window
 if has('clipboard')
