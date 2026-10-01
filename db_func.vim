@@ -160,10 +160,12 @@ function! ConvertFromEpoc()
 " Convert epoch under cursor into date
   let l:epoch = expand('<cword>')
   if l:epoch =~ '^\d\+$'
+    let l:start_col = match(getline('.'), '\d\+', col('.') - 1) + 1
     let l:cmd = 'ts=' . l:epoch . '; printf "%s.%03d\n" "$(date -d "@$((ts/1000))" "+%Y-%m-%d %H:%M:%S")" "$((ts%1000))"'
     let l:date = system(l:cmd)
     let l:date = substitute(l:date, '\n', '', 'g')
     execute 'normal! ciw' . l:date
+    call cursor(line('.'), l:start_col)
   else
     echo "No valid epoch under cursor"
   endif
