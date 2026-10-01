@@ -5,6 +5,7 @@
 nnoremap    -kk                     :call ClearMatchesAndSearch()<CR>
 xnoremap    -k                      :call AddVisualMatch()<CR>
 nnoremap    -k                      :call AddWordMatch()<CR>
+nnoremap    K                       :call SearchMatchPattern()<CR>
 nnoremap    <Leader>m               :call SendBufferViaEmail()<CR>
 nnoremap    <Leader>n               :call RenameFileInTab()<CR>
 nnoremap    -c                      :call ToggleComment()<CR>
@@ -59,6 +60,7 @@ let g:match_groups = [
       \ ]
 
 let g:match_index = 0
+let g:search_match_index = 0
 let g:global_matches = []
 highlight MyMatch1 ctermbg=DarkRed      guibg=DarkRed
 highlight MyMatch2 ctermbg=DarkBlue     guibg=DarkBlue
@@ -75,6 +77,7 @@ function! ClearMatchesAndSearch()
     set nohlsearch
     let g:global_matches = []
     let g:match_index = 0
+    let g:search_match_index = 0
     " Prompt for search pattern
     let l:pattern = input("Enter search pattern: ")
     if !empty(l:pattern)
@@ -117,7 +120,7 @@ endfunction
 
 function! AddWordMatch()
     " Wort unter dem Cursor verwenden
-    let l:text = expand('<cWORD>')
+    let l:text = expand('<cword>')
     let l:group = g:match_groups[
           \ g:match_index % len(g:match_groups)
           \ ]
@@ -128,6 +131,30 @@ function! AddWordMatch()
     call matchadd(l:group, '\V' . escape(l:text, '\'))
     let g:match_index += 1
 endfunction
+
+
+  function! SearchMatchPattern()
+    if empty(g:global_matches)
+      echo 'There is no match pattern in the list.'
+      return
+    endif
+
+    for l:offset in range(0, len(g:match_groups) - 1)
+      let l:index = (g:search_match_index + l:offset) % len(g:match_groups)
+      let l:group = g:match_groups[l:index]
+      let l:matches = filter(copy(g:global_matches), 'v:val.group ==# l:group')
+      if !empty(l:matches)
+        let l:pattern = l:matches[0].pattern
+        let @/ = '\V' . escape(l:pattern, '\')
+        set hlsearch
+        call search(@/, 'W')
+        let g:search_match_index = (l:index + 1) % len(g:match_groups)
+        return
+      endif
+    endfor
+
+    echo 'There is no match pattern in the list.'
+  endfunction
 
 
 function! DoRetab()
